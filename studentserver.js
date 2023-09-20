@@ -240,23 +240,27 @@ app.put('/students/:record_id', function (req, res) {
   var record_id = req.params.record_id;
   var fname = "students/" + record_id + ".json";
   var rsp_obj = {};
-  var obj = {};
 
-  obj.record_id = record_id;
-  obj.first_name = req.body.first_name;
-  obj.last_name = req.body.last_name;
-  obj.gpa = req.body.gpa;
-  obj.enrolled = req.body.enrolled;
+  // First, read the existing student data
+  fs.readFile(fname, "utf8", function (err, data) {
+    if (err) {
+      rsp_obj.record_id = record_id;
+      rsp_obj.message = 'error - resource not found';
+      return res.status(404).send(rsp_obj);
+    } else {
+      // Existing student object
+      var existingObj = JSON.parse(data);
 
-  var str = JSON.stringify(obj, null, 2);
+      // Update the attributes from the request body, if they exist
+      if (req.body.first_name !== undefined) existingObj.first_name = req.body.first_name;
+      if (req.body.last_name !== undefined) existingObj.last_name = req.body.last_name;
+      if (req.body.gpa !== undefined) existingObj.gpa = req.body.gpa;
+      if (req.body.enrolled !== undefined) existingObj.enrolled = req.body.enrolled;
 
-  //check if file exists
-  fs.stat(fname, function (err) {
-    if (err == null) {
+      var updatedStr = JSON.stringify(existingObj, null, 2);
 
-      //file exists
-      fs.writeFile("students/" + record_id + ".json", str, function (err) {
-        var rsp_obj = {};
+      // Write the updated student object back to the file
+      fs.writeFile(fname, updatedStr, function (err) {
         if (err) {
           rsp_obj.record_id = record_id;
           rsp_obj.message = 'error - unable to update resource';
@@ -266,17 +270,11 @@ app.put('/students/:record_id', function (req, res) {
           rsp_obj.message = 'successfully updated';
           return res.status(201).send(rsp_obj);
         }
-      });
-
-    } else {
-      rsp_obj.record_id = record_id; const fs = require('fs');
-      rsp_obj.message = 'error - resource not found';
-      return res.status(404).send(rsp_obj);
+      }); // End writeFile
     }
+  }); // End readFile
 
-  });
-
-}); //end put method
+}); //end put method, will not replace entire student obejct
 
 /**
  * @swagger
@@ -315,6 +313,66 @@ app.delete('/students/:record_id', function (req, res) {
 
 
 }); //end delete method
+
+/**
+ * @swagger
+ * /students/search/{last_name}:
+ *   get:
+ *     summary: Search for student(s) by last name.
+ *     description: Use this endpoint to search for a student based on their last name.
+ *     parameters:
+ *       - name: last_name
+ *         description: Student's last name
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Success. The student object has been retrieved
+ *       404:
+ *         description: Error. No student(s) with the given last name were found
+ */
+// method for searching by last name
+app.get('/students/search/:last_name', function (req, res) {
+  const lastName = req.params.last_name;
+  let matchingStudents = [];
+
+  // Use glob package
+  glob("students/*.json", null, function (err, files) {
+    if (err) {
+      return res.status(500).send({ "message": "error - internal server error" });
+    }
+
+    let readCount = 0;
+
+    for (const file of files) {
+      fs.readFile(file, "utf8", function (err, data) {
+        if (err) {
+          return res.status(500).send({ "message": "error - internal server error" });
+        }
+        
+        const student = JSON.parse(data);
+
+        if (student.last_name === lastName) {
+          matchingStudents.push(student);
+        }
+
+        readCount++;
+
+        if (readCount === files.length) {
+          if (matchingStudents.length > 0) {
+            return res.status(200).send(matchingStudents);
+          } else {
+            return res.status(404).send({ "message": "No students with the given last name were found." });
+          }
+        }
+      });
+    }
+  });
+}); //end search by last name 
+
+
 
 function checkStudentExists(files, obj, fname, lname, res) {
   console.log("checkStudentExists")
