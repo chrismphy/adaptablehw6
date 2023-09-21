@@ -9,6 +9,7 @@
     "dev": "nodemon studentserver.js"
   },
   "dependencies": {
+    "18": "^0.0.0",
     "all": "^0.0.0",
     "body-parser": "^1.20.2",
     "build": "^0.1.4",
