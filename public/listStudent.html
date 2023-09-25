@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>List Students</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  </head>
+
+  <body>
+
+    <label for="condition">Condition:</label>
+    <input type="text" id="condition" name="condition"><br><br>
+
+    <button onclick="listStudents()">List Students</button>
+    <br>
+    <br>
+    <div id="mydiv"></div>
+
+    <script>
+
+      function listStudents() {
+        var condition_val = $("#condition").val();
+
+        $.ajax({
+          url: `http://localhost:5678/listStudents`,
+          type: "PUT",
+          data: {
+            condition: condition_val
+          },
+          success: function (response) {
+            console.log(response);
+            $("#mydiv").text(JSON.stringify(response.students));
+          },
+          error: function (xhr) {
+            console.log(xhr.responseText);
+            $("#mydiv").text('error: ' + xhr.responseText);
+          }
+        });
+      }
+
+    </script>
+
+  </body>
+</html>
