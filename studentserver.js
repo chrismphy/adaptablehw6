@@ -334,16 +334,50 @@ app.delete('/students/:record_id', function (req, res) {
  *         description: Error. No student(s) with the given last name were found
  */
 // method for searching by last name
-app.get('/students/search/:last_name', function (req, res) {
-  const lastName = req.params.last_name.trim().toLowerCase(); // Convert to lower case and trim spaces
-  const result = students.filter(student => student.lastName.toLowerCase() === lastName); // Compare in lower case
+const fs = require('fs');
+const path = require('path');
 
-  if (result.length === 0) {
-    return res.status(404).json({ message: "No students with the given last name were found." });
-  }
-  
-  return res.json(result);
+app.get('/students/search/:last_name', function (req, res) {
+  const targetLastName = req.params.last_name.toLowerCase();
+  const studentsDir = './students';
+  let foundStudents = [];
+
+  fs.readdir(studentsDir, (err, files) => {
+    if (err) {
+      return res.status(500).send({ message: 'Server error' });
+    }
+    
+    let filesProcessed = 0;
+
+    if (files.length === 0) {
+      return res.status(404).send({ message: 'No students found' });
+    }
+
+    files.forEach(file => {
+      fs.readFile(path.join(studentsDir, file), 'utf8', (err, data) => {
+        filesProcessed++;
+        if (err) {
+          // Handle the error if needed
+        } else {
+          const student = JSON.parse(data);
+          if (student.lastName.toLowerCase() === targetLastName) {
+            foundStudents.push(student);
+          }
+        }
+
+        // Check if this is the last file to be processed
+        if (filesProcessed === files.length) {
+          if (foundStudents.length > 0) {
+            return res.status(200).send(foundStudents);
+          } else {
+            return res.status(404).send({ message: 'No students with the given last name were found.' });
+          }
+        }
+      });
+    });
+  });
 });
+
  //end search by last name 
 
 let nextId = 1; // Initialize ID counter
