@@ -334,28 +334,17 @@ app.delete('/students/:record_id', function (req, res) {
  *         description: Error. No student(s) with the given last name were found
  */
 // method for searching by last name
- 
- 
-  
-// Function to search students by last name
 const path = require('path');
-const port = 5678;
 
-// Function to search students by last name
-const searchStudentByLastName = (targetLastName, callback) => {
+
+
+const searchStudentByLastName = (targetLastName) => {
+  // Path where all student json files are saved
   const studentsDir = path.join(__dirname, 'students');
-  const foundStudents = [];
 
   fs.readdir(studentsDir, (err, files) => {
     if (err) {
-      callback(err, null);
-      return;
-    }
-
-    let filesRead = 0;
-
-    if (files.length === 0) {
-      callback(null, []);
+      console.error('Error reading directory:', err);
       return;
     }
 
@@ -363,45 +352,23 @@ const searchStudentByLastName = (targetLastName, callback) => {
       const filePath = path.join(studentsDir, file);
 
       fs.readFile(filePath, 'utf8', (err, data) => {
-        filesRead++;
-
         if (err) {
-          callback(err, null);
+          console.error('Error reading file:', err);
           return;
         }
 
         const student = JSON.parse(data);
 
         if (student.last_name.toLowerCase() === targetLastName.toLowerCase()) {
-          foundStudents.push(student);
-        }
-
-        if (filesRead === files.length) {
-          callback(null, foundStudents);
+          console.log('Student found:', student);
+          // Perform any additional logic here
         }
       });
     });
   });
 };
 
-// Express.js route to handle GET request
-app.get('/students/search/:lastName', (req, res) => {
-  const { lastName } = req.params;
-
-  searchStudentByLastName(lastName, (err, foundStudents) => {
-    if (err) {
-      res.status(500).json({ message: 'Internal Server Error' });
-      return;
-    }
-
-    if (foundStudents.length > 0) {
-      res.status(200).json(foundStudents);
-    } else {
-      res.status(404).json({ message: 'No students with the given last name were found.' });
-    }
-  });
-});
-
+searchStudentByLastName('Doe');
  //end search by last name 
 
 let nextId = 1; // Initialize ID counter
