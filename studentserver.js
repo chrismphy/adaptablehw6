@@ -355,12 +355,19 @@ app.get('/students/search/:last_name', function (req, res) {
     files.forEach(file => {
       fs.readFile(path.join(studentsDir, file), 'utf8', (err, data) => {
         filesProcessed++;
+
         if (err) {
           // Handle the error if needed
+          console.error('Error reading the file:', err);
         } else {
-          const student = JSON.parse(data);
-          if (student.lastName.toLowerCase() === targetLastName) {
-            foundStudents.push(student);
+          try {
+            const student = JSON.parse(data);
+
+            if (student && student.lastName && student.lastName.toLowerCase() === targetLastName) {
+              foundStudents.push(student);
+            }
+          } catch (parseError) {
+            console.error('Error parsing JSON:', parseError);
           }
         }
 
