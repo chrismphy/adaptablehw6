@@ -339,6 +339,13 @@ app.delete('/students/:record_id', function (req, res) {
 const path = require('path');
   
 // Function to search students by last name
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const app = express();
+const port = 5678;
+
+// Function to search students by last name
 const searchStudentByLastName = (targetLastName, callback) => {
   const studentsDir = path.join(__dirname, 'students');
   const foundStudents = [];
@@ -353,6 +360,7 @@ const searchStudentByLastName = (targetLastName, callback) => {
 
     if (files.length === 0) {
       callback(null, []);
+      return;
     }
 
     files.forEach((file) => {
@@ -396,10 +404,6 @@ app.get('/students/search/:lastName', (req, res) => {
       res.status(404).json({ message: 'No students with the given last name were found.' });
     }
   });
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}/`);
 });
 
  //end search by last name 
