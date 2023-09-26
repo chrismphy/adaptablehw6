@@ -2,58 +2,34 @@
 <html lang="en-US">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Add Student</title>
+    <title>Delete Student</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   </head>
-
   <body>
-
-    <label for="fname">First Name:</label>
-    <input type="text" id="fname" name="fname"><br><br>
-
-    <label for="lname">Last Name:</label>
-    <input type="text" id="lname" name="lname"><br><br>
-
-    <label for="gpa">GPA:</label>
-    <input type="text" id="gpa" name="gpa"><br><br>
-
-    <label for="enrolled">Enrolled:</label>
-    <input type="text" id="enrolled" name="enrolled"><br><br>
-
-    <button onclick="sendStudent()">Submit</button>
-    <br>
-    <br>
+    
+    <label for="studentId">Student ID:</label>
+    <input type="text" id="studentId" name="studentId"><br><br>
+    
+    <button onclick="deleteStudent()">Delete</button>
     <div id="mydiv"></div>
 
     <script>
-
-      function sendStudent() {
-        var fname_val = $("#fname").val();
-        var lname_val = $("#lname").val();
-        var gpa_val = $("#gpa").val();
-        var enrolled_val = $("#enrolled").val();
-
+      function deleteStudent() {
+        var studentId_val = $("#studentId").val();
+        
         $.ajax({
-          url: "http://localhost:5678/addStudent",
-          type: "post",
-          data: {
-            first_name: fname_val,
-            last_name: lname_val,
-            gpa: gpa_val,
-            enrolled: enrolled_val
-          },
-          success: function (response) {
+          url: `http://localhost:5678/students/${studentId_val}`,
+          type: "DELETE",
+          success: function(response) {
             console.log(response);
-            $("#mydiv").text(response.message);
+            $("#mydiv").text("Student deleted: " + response.message);
           },
-          error: function (xhr) {
+          error: function(xhr) {
             console.log(xhr.responseText);
             $("#mydiv").text('error: ' + xhr.responseText);
           }
         });
       }
-
     </script>
 
   </body>
