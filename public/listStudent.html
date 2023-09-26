@@ -6,31 +6,36 @@
     <title>List Students</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   </head>
-
   <body>
-    <div id="mydiv"></div> <!-- Added this div for displaying the list of students -->
-
+    <button onclick="listStudents()">List All Students</button>
+    <br>
+    <br>
+    <div id="mydiv" name="mydiv"></div>
+    
     <script>
-      // This function will run when the page is fully loaded
-      $(document).ready(function() {
-        listStudents();
-      });
-
+  
       function listStudents() {
         $.ajax({
           url: "http://localhost:5678/students",
-          type: "GET",
-          success: function (response) {
-            console.log(response);
-            $("#mydiv").text(JSON.stringify(response.students));
+          type: "get",
+          success: function(response) {
+            const students = response.students;
+            let displayText = "";
+  
+            students.forEach(student => {
+              displayText += `Name: ${student.first_name} ${student.last_name}, GPA: ${student.gpa}, Enrolled: ${student.enrolled}\n`;
+            });
+  
+            $("#mydiv").text(displayText);
           },
-          error: function (xhr) {
-            console.log(xhr.responseText);
+          error: function(xhr) {
             $("#mydiv").text('error: ' + xhr.responseText);
           }
         });
       }
+      
     </script>
+  
   </body>
-</html>
-
+  </html>
+  
