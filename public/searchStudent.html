@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Search Student</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <input type="text" id="last_name" placeholder="Enter student last name">
+    <button onclick="searchStudent()">Search Student</button>
+    <br>
+    <br>
+    <div id="mydiv" name="mydiv"></div>
+
+    <script>
+      function searchStudent() {
+        var last_name = $("#last_name").val();
+        $.ajax({
+          url: "http://localhost:5678/searchStudent/" + last_name,
+          type: "get",
+          success: function(response) {
+            const students = JSON.parse(response);
+            let resultText = "";
+            for(let i = 0; i < students.length; i++) {
+              const student = students[i];
+              resultText += "ID: " + student.id + ", Name: " + student.first_name + " " + student.last_name + ", GPA: " + student.gpa + ", Enrolled: " + student.enrolled + "<br>";
+            }
+            $("#mydiv").html(resultText);
+          },
+          error: function(xhr) {
+            $("#mydiv").text('error: ' + xhr.responseText);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
