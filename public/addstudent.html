@@ -2,34 +2,62 @@
 <html lang="en-US">
   <head>
     <meta charset="UTF-8" />
-    <title>Delete Student</title>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Student</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   </head>
+
   <body>
-    
-    <label for="studentId">Student ID:</label>
-    <input type="text" id="studentId" name="studentId"><br><br>
-    
-    <button onclick="deleteStudent()">Delete</button>
+
+    <label for="fname">First Name:</label>
+    <input type="text" id="fname" name="fname"><br><br>
+
+    <label for="lname">Last Name:</label>
+    <input type="text" id="lname" name="lname"><br><br>
+
+    <label for="gpa">GPA:</label>
+    <input type="text" id="gpa" name="gpa"><br><br>
+
+    <label for="enrolled">Enrolled:</label>
+    <select id="enrolled" name="enrolled">
+      <option value="true">Enrolled</option>
+      <option value="false">Not Enrolled</option>
+    </select>
+    <br><br>
+
+    <button onclick="sendStudent()">Submit</button>
+    <br>
+    <br>
     <div id="mydiv"></div>
 
     <script>
-      function deleteStudent() {
-        var studentId_val = $("#studentId").val();
-        
+
+      function sendStudent() {
+        var fname_val = $("#fname").val();
+        var lname_val = $("#lname").val();
+        var gpa_val = $("#gpa").val();
+        var enrolled_val = $("#enrolled").val() === "true" ? true : false;
+
         $.ajax({
-          url: `http://localhost:5678/students/${studentId_val}`,
-          type: "DELETE",
-          success: function(response) {
-            console.log(response);
-            $("#mydiv").text("Student deleted: " + response.message);
+          url: "http://localhost:5678/addStudent",
+          type: "post",
+          data: {
+            first_name: fname_val,
+            last_name: lname_val,
+            gpa: gpa_val,
+            enrolled: enrolled_val
           },
-          error: function(xhr) {
+          success: function (response) {
+            console.log(response);
+            $("#mydiv").text(response.message);
+          },
+          error: function (xhr) {
             console.log(xhr.responseText);
             $("#mydiv").text('error: ' + xhr.responseText);
           }
         });
       }
+
     </script>
 
   </body>
