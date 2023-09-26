@@ -377,7 +377,7 @@ app.get('/searchStudentByLastName/:targetLastName', function (req, res) {
   });
 });
 
-searchStudentByLastName('Doe');
+//searchStudentByLastName('Doe');
  //end search by last name 
 
 let nextId = 1; // Initialize ID counter
