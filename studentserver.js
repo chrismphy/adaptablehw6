@@ -334,7 +334,7 @@ app.delete('/students/:record_id', function (req, res) {
  *         description: Error. No student(s) with the given last name were found
  */
 // method for searching by last name
-app.get('/students/search/last_name', function (req, res) {
+app.get('/students/search/:last_name', function (req, res) {
   const lastName = req.params.last_name;
   let matchingStudents = [];
 
