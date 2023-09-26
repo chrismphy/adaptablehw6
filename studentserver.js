@@ -334,9 +334,10 @@ app.delete('/students/:record_id', function (req, res) {
  *         description: Error. No student(s) with the given last name were found
  */
 // method for searching by last name
+ 
+ 
 const path = require('path');
-
-  
+ 
 const port = 5678;
 
 // Function to search students by last name
@@ -387,8 +388,21 @@ app.get('/students/search/:lastName', (req, res) => {
 
   searchStudentByLastName(lastName, (err, foundStudents) => {
     if (err) {
-      res.status(500).json({ message: 'Internal Server Error
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
 
+    if (foundStudents.length > 0) {
+      res.status(200).json(foundStudents);
+    } else {
+      res.status(404).json({ message: 'No students with the given last name were found.' });
+    }
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}/`);
+});
 
  //end search by last name 
 
