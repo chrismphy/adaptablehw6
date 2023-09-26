@@ -21,6 +21,7 @@
     url: "http://localhost:5678/students/search/" + last_name, // removed the colon before last_name
     type: "get",
     success: function(response) {
+      console.log("Server Response:", response);
       const students = JSON.parse(response);
       let resultText = "";
       for(let i = 0; i < students.length; i++) {
