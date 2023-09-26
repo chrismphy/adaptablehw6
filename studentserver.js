@@ -336,54 +336,40 @@ app.delete('/students/:record_id', function (req, res) {
 // method for searching by last name
 const path = require('path');
 
-app.get('/students/search/:last_name', function (req, res) {
-  const targetLastName = req.params.last_name.toLowerCase();
-  const studentsDir = './students';
-  let foundStudents = [];
+const fs = require('fs');
+const path = require('path');
+
+const searchStudentByLastName = (targetLastName) => {
+  // Path where all student json files are saved
+  const studentsDir = path.join(__dirname, 'students');
 
   fs.readdir(studentsDir, (err, files) => {
     if (err) {
-      return res.status(500).send({ message: 'Server error' });
-    }
-    
-    let filesProcessed = 0;
-
-    if (files.length === 0) {
-      return res.status(404).send({ message: 'No students found' });
+      console.error('Error reading directory:', err);
+      return;
     }
 
-    files.forEach(file => {
-      fs.readFile(path.join(studentsDir, file), 'utf8', (err, data) => {
-        filesProcessed++;
+    files.forEach((file) => {
+      const filePath = path.join(studentsDir, file);
 
+      fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
-          // Handle the error if needed
-          console.error('Error reading the file:', err);
-        } else {
-          try {
-            const student = JSON.parse(data);
-
-            if (student && student.lastName && student.lastName.toLowerCase() === targetLastName) {
-              foundStudents.push(student);
-            }
-          } catch (parseError) {
-            console.error('Error parsing JSON:', parseError);
-          }
+          console.error('Error reading file:', err);
+          return;
         }
 
-        // Check if this is the last file to be processed
-        if (filesProcessed === files.length) {
-          if (foundStudents.length > 0) {
-            return res.status(200).send(foundStudents);
-          } else {
-            return res.status(404).send({ message: 'No students with the given last name were found.' });
-          }
+        const student = JSON.parse(data);
+
+        if (student.last_name.toLowerCase() === targetLastName.toLowerCase()) {
+          console.log('Student found:', student);
+          // Perform any additional logic here
         }
       });
     });
   });
-});
+};
 
+searchStudentByLastName('Doe');
  //end search by last name 
 
 let nextId = 1; // Initialize ID counter
