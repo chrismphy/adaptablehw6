@@ -18,7 +18,7 @@
       function searchStudent() {
         var last_name = $("#last_name").val();
         $.ajax({
-          url: "http://localhost:5678/student/" + last_name,
+          url: "http://localhost:5678/searchStudent/" + last_name,
           type: "get",
           success: function(response) {
             const students = JSON.parse(response);
