@@ -335,42 +335,16 @@ app.delete('/students/:record_id', function (req, res) {
  */
 // method for searching by last name
 app.get('/students/search/:last_name', function (req, res) {
-  const lastName = req.params.last_name;
-  let matchingStudents = [];
+  const lastName = req.params.last_name.trim().toLowerCase(); // Convert to lower case and trim spaces
+  const result = students.filter(student => student.lastName.toLowerCase() === lastName); // Compare in lower case
 
-  // Use glob package
-  glob("students/*.json", null, function (err, files) {
-    if (err) {
-      return res.status(500).send({ "message": "error - internal server error" });
-    }
-
-    let readCount = 0;
-
-    for (const file of files) {
-      fs.readFile(file, "utf8", function (err, data) {
-        if (err) {
-          return res.status(500).send({ "message": "error - internal server error" });
-        }
-        
-        const student = JSON.parse(data);
-
-        if (student.last_name === lastName) {
-          matchingStudents.push(student);
-        }
-
-        readCount++;
-
-        if (readCount === files.length) {
-          if (matchingStudents.length > 0) {
-            return res.status(200).send(matchingStudents);
-          } else {
-            return res.status(404).send({ "message": "No students with the given last name were found." });
-          }
-        }
-      });
-    }
-  });
-}); //end search by last name 
+  if (result.length === 0) {
+    return res.status(404).json({ message: "No students with the given last name were found." });
+  }
+  
+  return res.json(result);
+});
+ //end search by last name 
 
 let nextId = 1; // Initialize ID counter
 app.post('/addStudent', (req, res) => {
