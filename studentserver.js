@@ -336,37 +336,46 @@ app.delete('/students/:record_id', function (req, res) {
 // method for searching by last name
 const path = require('path');
 
-
-
-const searchStudentByLastName = (targetLastName) => {
-  // Path where all student json files are saved
+app.get('/searchStudentByLastName/:targetLastName', function (req, res) {
+  const targetLastName = req.params.targetLastName;
   const studentsDir = path.join(__dirname, 'students');
+  const rsp_obj = {};
 
-  fs.readdir(studentsDir, (err, files) => {
+  fs.readdir(studentsDir, function (err, files) {
     if (err) {
-      console.error('Error reading directory:', err);
-      return;
+      rsp_obj.message = 'error - directory not found';
+      return res.status(404).send(rsp_obj);
     }
 
-    files.forEach((file) => {
+    let found = false;
+
+    files.forEach((file, index, array) => {
       const filePath = path.join(studentsDir, file);
 
-      fs.readFile(filePath, 'utf8', (err, data) => {
+      fs.readFile(filePath, 'utf8', function (err, data) {
         if (err) {
-          console.error('Error reading file:', err);
-          return;
+          rsp_obj.message = `error - unable to read file ${file}`;
+          return res.status(500).send(rsp_obj);
         }
 
         const student = JSON.parse(data);
 
         if (student.last_name.toLowerCase() === targetLastName.toLowerCase()) {
-          console.log('Student found:', student);
-          // Perform any additional logic here
+          rsp_obj.message = 'Student found';
+          rsp_obj.student = student;
+
+          return res.status(200).send(rsp_obj);
+        }
+
+        // Check if it's the last iteration and the student was not found
+        if (index === array.length - 1 && !found) {
+          rsp_obj.message = 'Student not found';
+          return res.status(404).send(rsp_obj);
         }
       });
     });
   });
-};
+});
 
 searchStudentByLastName('Doe');
  //end search by last name 
