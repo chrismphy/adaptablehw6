@@ -336,8 +336,7 @@ app.delete('/students/:record_id', function (req, res) {
 // method for searching by last name
 const path = require('path');
 
-const fs = require('fs');
-const path = require('path');
+
 
 const searchStudentByLastName = (targetLastName) => {
   // Path where all student json files are saved
