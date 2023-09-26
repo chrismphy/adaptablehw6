@@ -16,30 +16,32 @@
 
     <script>
       function searchStudent() {
-  var last_name = $("#last_name").val();
-  $.ajax({
-    url: "http://localhost:5678/students/search/" + last_name, // removed the colon before last_name
-    type: "get",
-    success: function(response) {
-      console.log("Server Response:", response);
-      const students = JSON.parse(response);
-      let resultText = "";
-      for(let i = 0; i < students.length; i++) {
-        const student = students[i];
-        resultText += "ID: " + student.record_id + ", Name: " + student.first_name + " " + student.last_name + ", GPA: " + student.gpa + ", Enrolled: " + student.enrolled + "<br>";
+        var last_name = encodeURIComponent($("#last_name").val());  // URL encode the last_name
+        $.ajax({
+          url: "http://localhost:5678/students/search/" + last_name,
+          type: "get",
+          success: function(response) {
+            console.log("Type of Response:", typeof response);  // Check the type of response
+            console.log("Server Response:", response);
+            const students = Array.isArray(response) ? response : JSON.parse(response);
+            let resultText = "";
+            for(let i = 0; i < students.length; i++) {
+              const student = students[i];
+              resultText += "ID: " + student.record_id + ", Name: " + student.first_name + " " + student.last_name + ", GPA: " + student.gpa + ", Enrolled: " + student.enrolled + "<br>";
+            }
+            $("#mydiv").html(resultText);
+          },
+          error: function(xhr) {
+            console.log("Server Error:", xhr.responseText);  // Log the server's error response
+            try {
+              const parsedError = JSON.parse(xhr.responseText);
+              $("#mydiv").text('error: ' + parsedError.message);
+            } catch (e) {
+              $("#mydiv").text('error: ' + xhr.responseText);
+            }
+          }
+        });
       }
-      $("#mydiv").html(resultText);
-    },
-    error: function(xhr) {
-      try {
-        const parsedError = JSON.parse(xhr.responseText);
-        $("#mydiv").text('error: ' + parsedError.message);
-      } catch (e) {
-        $("#mydiv").text('error: ' + xhr.responseText);
-      }
-    }
-  });
-}
     </script>
   </body>
 </html>
