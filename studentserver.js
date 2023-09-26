@@ -339,7 +339,6 @@ app.delete('/students/:record_id', function (req, res) {
   
 // Function to search students by last name
 const path = require('path');
-const app = express();
 const port = 5678;
 
 // Function to search students by last name
