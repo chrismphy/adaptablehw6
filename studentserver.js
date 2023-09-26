@@ -372,6 +372,13 @@ app.get('/students/search/:last_name', function (req, res) {
   });
 }); //end search by last name 
 
+let nextId = 1; // Initialize ID counter
+app.post('/addStudent', (req, res) => {
+  const { first_name, last_name, gpa, enrolled } = req.body;
+  const newStudent = { id: nextId++, first_name, last_name, gpa, enrolled };
+  students.push(newStudent);
+  res.send({ message: 'Student added successfully!', id: newStudent.id });
+});
 
 
 function checkStudentExists(files, obj, fname, lname, res) {

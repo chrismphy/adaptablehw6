@@ -49,7 +49,7 @@
           },
           success: function (response) {
             console.log(response);
-            $("#mydiv").text(response.message);
+            $("#mydiv").text("Successfully added " + fname_val + " " + lname_val + "! Your ID number is " + response.id);
           },
           error: function (xhr) {
             console.log(xhr.responseText);
@@ -58,6 +58,5 @@
         });
       }
     </script>
-
   </body>
 </html>
