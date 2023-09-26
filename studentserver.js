@@ -337,36 +337,61 @@ app.delete('/students/:record_id', function (req, res) {
 const path = require('path');
 
 
+const express = require('express');
+ 
+const path = require('path');
+const app = express();
+const port = 5678;
 
-const searchStudentByLastName = (targetLastName) => {
-  // Path where all student json files are saved
+// Function to search students by last name
+const searchStudentByLastName = (targetLastName, callback) => {
   const studentsDir = path.join(__dirname, 'students');
+  const foundStudents = [];
 
   fs.readdir(studentsDir, (err, files) => {
     if (err) {
-      console.error('Error reading directory:', err);
+      callback(err, null);
       return;
+    }
+
+    let filesRead = 0;
+
+    if (files.length === 0) {
+      callback(null, []);
     }
 
     files.forEach((file) => {
       const filePath = path.join(studentsDir, file);
 
       fs.readFile(filePath, 'utf8', (err, data) => {
+        filesRead++;
+
         if (err) {
-          console.error('Error reading file:', err);
+          callback(err, null);
           return;
         }
 
         const student = JSON.parse(data);
 
         if (student.last_name.toLowerCase() === targetLastName.toLowerCase()) {
-          console.log('Student found:', student);
-          // Perform any additional logic here
+          foundStudents.push(student);
+        }
+
+        if (filesRead === files.length) {
+          callback(null, foundStudents);
         }
       });
     });
   });
 };
+
+// Express.js route to handle GET request
+app.get('/students/search/:lastName', (req, res) => {
+  const { lastName } = req.params;
+
+  searchStudentByLastName(lastName, (err, foundStudents) => {
+    if (err) {
+      res.status(500).json({ message: 'Internal Server Error
 
 
  //end search by last name 
