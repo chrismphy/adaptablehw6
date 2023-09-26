@@ -334,48 +334,44 @@ app.delete('/students/:record_id', function (req, res) {
  *         description: Error. No student(s) with the given last name were found
  */
 // method for searching by last name
-const path = require('path');
+app.get('/students/search/:last_name', function (req, res) {
+  const lastName = req.params.last_name;
+  let matchingStudents = [];
 
-app.get('/searchStudentByLastName/:targetLastName', function (req, res) {
-  const targetLastName = req.params.targetLastName;
-  const studentsDir = path.join(__dirname, 'students');
-  const rsp_obj = {};
-
-  fs.readdir(studentsDir, function (err, files) {
+  // Use glob package
+  glob("students/*.json", null, function (err, files) {
     if (err) {
-      rsp_obj.message = 'error - directory not found';
-      return res.status(404).send(rsp_obj);
+      return res.status(500).send({ "message": "error - internal server error" });
     }
 
-    let found = false;
+    let readCount = 0;
 
-    files.forEach((file, index, array) => {
-      const filePath = path.join(studentsDir, file);
-
-      fs.readFile(filePath, 'utf8', function (err, data) {
+    for (const file of files) {
+      fs.readFile(file, "utf8", function (err, data) {
         if (err) {
-          rsp_obj.message = `error - unable to read file ${file}`;
-          return res.status(500).send(rsp_obj);
+          return res.status(500).send({ "message": "error - internal server error" });
         }
-
+        
         const student = JSON.parse(data);
 
-        if (student.last_name.toLowerCase() === targetLastName.toLowerCase()) {
-          rsp_obj.message = 'Student found';
-          rsp_obj.student = student;
-
-          return res.status(200).send(rsp_obj);
+        if (student.last_name === lastName) {
+          matchingStudents.push(student);
         }
 
-        // Check if it's the last iteration and the student was not found
-        if (index === array.length - 1 && !found) {
-          rsp_obj.message = 'Student not found';
-          return res.status(404).send(rsp_obj);
+        readCount++;
+
+        if (readCount === files.length) {
+          if (matchingStudents.length > 0) {
+            return res.status(200).send(matchingStudents);
+          } else {
+            return res.status(404).send({ "message": "No students with the given last name were found." });
+          }
         }
       });
-    });
+    }
   });
-});
+}); //end search by last name 
+
 
 //searchStudentByLastName('Doe');
  //end search by last name 
