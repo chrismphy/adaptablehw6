@@ -50,7 +50,7 @@
           success: function (response) {
             console.log("Complete Response:", response);
             console.log(response);
-            $("#mydiv").text("Successfully added " + fname_val + " " + lname_val + "! Your ID number is " + response.id);
+            $("#mydiv").text("Successfully added " + fname_val + " " + lname_val + "! Your ID number is " + response.record_id);
           },
           error: function (xhr) {
             console.log(xhr.responseText);

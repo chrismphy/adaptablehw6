@@ -375,7 +375,7 @@ app.get('/students/search/:last_name', function (req, res) {
 let nextId = 1; // Initialize ID counter
 app.post('/addStudent', (req, res) => {
   const { first_name, last_name, gpa, enrolled } = req.body;
-  const newStudent = { id: nextId++, first_name, last_name, gpa, enrolled };
+  const newStudent = { record_id: nextId++, first_name, last_name, gpa, enrolled };
   students.push(newStudent);
   res.send({ message: 'Student added successfully!', id: newStudent.id });
 });
