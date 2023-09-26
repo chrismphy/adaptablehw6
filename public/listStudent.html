@@ -16,8 +16,8 @@
     <script>
       function listStudents() {
         $.ajax({
-          url: `http://localhost:5678/listStudents`,
-          type: "PUT",
+          url: "http://localhost:5678/students", // Updated the URL here
+          type: "GET",  // Changed the type to GET
           success: function (response) {
             console.log(response);
             $("#mydiv").text(JSON.stringify(response.students));
