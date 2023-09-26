@@ -8,12 +8,18 @@
   </head>
 
   <body>
-listStudents()
+    <div id="mydiv"></div> <!-- Added this div for displaying the list of students -->
+
     <script>
+      // This function will run when the page is fully loaded
+      $(document).ready(function() {
+        listStudents();
+      });
+
       function listStudents() {
         $.ajax({
-          url: "http://localhost:5678/students", // Updated the URL here
-          type: "GET",  // Changed the type to GET
+          url: "http://localhost:5678/students",
+          type: "GET",
           success: function (response) {
             console.log(response);
             $("#mydiv").text(JSON.stringify(response.students));
@@ -27,3 +33,4 @@ listStudents()
     </script>
   </body>
 </html>
+
