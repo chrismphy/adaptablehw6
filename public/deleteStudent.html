@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete Student</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  </head>
+
+  <body>
+    
+    <label for="studentID">Student ID:</label>
+    <input type="text" id="studentID" name="studentID"><br><br>
+
+    <button onclick="deleteStudent()">Delete Student</button>
+    <br>
+    <br>
+    <div id="mydiv"></div>
+
+    <script>
+      function deleteStudent() {
+        var studentID_val = $("#studentID").val();
+
+        $.ajax({
+          url: `http://localhost:5678/students/${studentID_val}`, // Assuming the ID is part of the URL
+          type: "DELETE",
+          success: function (response) {
+            console.log(response);
+            $("#mydiv").text(response.message);
+          },
+          error: function (xhr) {
+            console.log(xhr.responseText);
+            $("#mydiv").text('error: ' + xhr.responseText);
+          }
+        });
+      }
+    </script>
+
+  </body>
+</html>
