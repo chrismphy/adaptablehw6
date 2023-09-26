@@ -6,36 +6,57 @@
     <title>List Students</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   </head>
+
   <body>
-    <button onclick="listStudents()">List All Students</button>
-    <br>
-    <br>
-    <div id="mydiv" name="mydiv"></div>
-    
+    <button onclick="listStudents()">Refresh List</button>
+    <table id="studentTable" border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>GPA</th>
+          <th>Enrolled</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows will go here -->
+      </tbody>
+    </table>
+
     <script>
-  
+      // This function will run when the page is fully loaded
+      $(document).ready(function() {
+        listStudents();
+      });
+
       function listStudents() {
         $.ajax({
           url: "http://localhost:5678/students",
-          type: "get",
-          success: function(response) {
+          type: "GET",
+          success: function (response) {
+            console.log(response);
             const students = response.students;
-            let displayText = "";
-  
-            students.forEach(student => {
-              displayText += `Name: ${student.first_name} ${student.last_name}, GPA: ${student.gpa}, Enrolled: ${student.enrolled}\n`;
-            });
-  
-            $("#mydiv").text(displayText);
+            let tableRows = '';
+            
+            for(let i = 0; i < students.length; i++) {
+              tableRows += `<tr>
+                <td>${students[i].id}</td>
+                <td>${students[i].first_name}</td>
+                <td>${students[i].last_name}</td>
+                <td>${students[i].gpa}</td>
+                <td>${students[i].enrolled}</td>
+              </tr>`;
+            }
+
+            $("#studentTable tbody").html(tableRows);
           },
-          error: function(xhr) {
-            $("#mydiv").text('error: ' + xhr.responseText);
+          error: function (xhr) {
+            console.log(xhr.responseText);
+            $("#studentTable tbody").html('<tr><td colspan="5">Error loading data</td></tr>');
           }
         });
       }
-      
     </script>
-  
   </body>
-  </html>
-  
+</html>
