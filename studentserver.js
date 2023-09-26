@@ -368,7 +368,7 @@ const searchStudentByLastName = (targetLastName) => {
   });
 };
 
-searchStudentByLastName('Doe');
+
  //end search by last name 
 
 let nextId = 1; // Initialize ID counter
