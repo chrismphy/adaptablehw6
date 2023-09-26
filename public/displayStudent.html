@@ -1,0 +1,35 @@
+<!-- filename: displayStudent.html -->
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete Student</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  </head>
+
+  <input type="text" id="record_id" placeholder="Enter student record ID">
+  <button onclick="getStudent()">Get Student</button>
+  <br>
+  <br>
+  <div id="mydiv" name="mydiv"></div>
+
+  <script>
+    function getStudent() {
+      var record_id = $("#record_id").val();
+      $.ajax({
+        url: "http://localhost:5678/students/" + record_id,
+        type: "get",
+        success: function(response) {
+          const student = JSON.parse(response);
+          $("#mydiv").text("Name: " + student.first_name + " " + student.last_name + ", GPA: " + student.gpa + ", Enrolled: " + student.enrolled);
+        },
+        error: function(xhr) {
+          $("#mydiv").text('error: ' + xhr.responseText);
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
