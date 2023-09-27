@@ -22,8 +22,12 @@
     <input type="text" id="gpa" name="gpa"><br><br>
 
     <label for="enrolled">Enrolled:</label>
-    <input type="text" id="enrolled" name="enrolled"><br><br>
-
+    <select id="enrolled" name="enrolled">
+      <option value="true">Enrolled</option>
+      <option value="false">Not Enrolled</option>
+    </select>
+    <br><br>
+    
     <button onclick="updateStudent()">Update</button>
     <br>
     <br>
@@ -36,8 +40,7 @@
         var fname_val = $("#fname").val();
         var lname_val = $("#lname").val();
         var gpa_val = $("#gpa").val();
-        var enrolled_val = $("#enrolled").val();
-
+        var enrolled_val = $("#enrolled").val() === "true" ? true : false;
         $.ajax({
           url: `http://localhost:5678/students/${id_val}`, // Set dynamic URL based on the student ID
           type: "PUT", // Use PUT method for updating
