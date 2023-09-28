@@ -4,11 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Add Student</title>
+    <!-- Include Bootstrap CSS and JS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
-  
   <body>
-    <a href="index.html" style="position: fixed; top: 0; left: 0;">Back to Home</a>
+    <div id="navbar"></div>
+    <script>
+      $(function(){
+        $("#navbar").load("navbar.html", function(response, status, xhr) {
+          if (status == "error") {
+            alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+          } else {
+            // highlightNav(); // Uncomment if highlightNav is defined and needed
+          }
+        });
+      });
+    </script>
     <br><br><br>
     <label for="fname">First Name:</label>
     <input type="text" id="fname" name="fname"><br><br>
@@ -32,7 +45,6 @@
     <div id="mydiv"></div>
 
     <script>
-
       function sendStudent() {
         var fname_val = $("#fname").val();
         var lname_val = $("#lname").val();
@@ -50,7 +62,6 @@
           },
           success: function (response) {
             console.log("Complete Response:", response);
-            console.log(response);
             $("#mydiv").text("Successfully added " + fname_val + " " + lname_val + "! Your ID number is " + response.record_id);
           },
           error: function (xhr) {
