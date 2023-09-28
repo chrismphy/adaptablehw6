@@ -4,21 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>List Students</title>
+    <!-- Include Bootstrap CSS and JS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
-
   <body>
-
     <div id="navbar"></div>
-  <script>
-$(function(){
-  $("#navbar").load("navbar.html", function() {
-    highlightNav();
-  });
-});
-</script>
-
-
+    <script>
+      $(function(){
+        $("#navbar").load("navbar.html", function(response, status, xhr) {
+          if (status == "error") {
+            alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+          } else {
+            // highlightNav(); // Uncomment if highlightNav is defined and needed
+          }
+        });
+      });
+    </script>
 
     <a href="index2.html">Back to Home</a>
     <br><br><br>
