@@ -28,9 +28,23 @@
 </head>
 <body>
   <div id="navbar"></div>
-  
+  <div id="header"></div>
+  <script>
+    $(function(){
+      $("#header").load("header.html", function(response, status, xhr) {
+        if (status == "error") {
+          alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+        }
+      });
+      
+      $("#navbar").load("navbar.html", function(response, status, xhr) {
+        if (status == "error") {
+          alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+        }
+      });
+    });
+  </script>
   <div class="container">
-    <div id="header"></div>
     <h3>Select one of the above options</h3>
   </div>
 </body>
