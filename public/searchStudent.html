@@ -4,11 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Search Student</title>
+    <!-- Include Bootstrap CSS and JS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
-
   <body>
-    <a href="index.html">Back to Home</a>
+    <!-- Include Navbar -->
+    <div id="navbar"></div>
+    <script>
+      $(function(){
+        $("#navbar").load("navbar.html", function(response, status, xhr) {
+          if (status == "error") {
+            alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+          }
+        });
+      });
+    </script>
     <br><br><br>
     <input type="text" id="last_name" placeholder="Enter student last name">
     <button onclick="searchStudent()">Search Student</button>
