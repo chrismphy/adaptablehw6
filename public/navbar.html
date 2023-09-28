@@ -10,9 +10,14 @@
         <li><a href="displayStudent.html">View</a></li>
         <li><a href="deleteStudent.html">Delete</a></li>
         <li><a href="listStudent.html">List</a></li>
-        <li><a href="searchStudent.html">Search by Last Name</a></li>
       </ul>
+      <!-- Insert this in your existing navbar.html where the search bar should be located -->
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" id="searchBar" class="form-control" placeholder="Search by Last Name" oninput="searchStudent()">
+        </div>
+        <div id="searchResults" style="position: absolute; background-color: #fff; z-index: 10;"></div>
+      </form>
     </div>
   </nav>
-
   

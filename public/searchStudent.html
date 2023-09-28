@@ -6,20 +6,14 @@
     <title>Search Student</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   </head>
+
   <body>
-    <div id="navbar"></div>
-    <script>
-      $(function(){
-        $("#navbar").load("navbar.html", function(response, status, xhr) {
-          if (status == "error") {
-            alert("An error occurred: " + xhr.status + " " + xhr.statusText);
-          }
-        });
-      });
-    </script>
+    <a href="index.html">Back to Home</a>
     <br><br><br>
-    <input type="text" id="last_name" placeholder="Enter student last name" oninput="searchStudent()">
-    <br><br>
+    <input type="text" id="last_name" placeholder="Enter student last name">
+    <button onclick="searchStudent()">Search Student</button>
+    <br>
+    <br>
     <div id="mydiv" name="mydiv"></div>
 
     <script>
@@ -29,6 +23,8 @@
           url: "http://localhost:5678/students/search/" + last_name,
           type: "get",
           success: function(response) {
+            console.log("Type of Response:", typeof response);  // Check the type of response
+            console.log("Server Response:", response);
             const students = Array.isArray(response) ? response : JSON.parse(response);
             let resultText = "";
             for(let i = 0; i < students.length; i++) {
@@ -38,7 +34,13 @@
             $("#mydiv").html(resultText);
           },
           error: function(xhr) {
-            $("#mydiv").text('error: ' + xhr.responseText);
+            console.log("Server Error:", xhr.responseText);  // Log the server's error response
+            try {
+              const parsedError = JSON.parse(xhr.responseText);
+              $("#mydiv").text('error: ' + parsedError.message);
+            } catch (e) {
+              $("#mydiv").text('error: ' + xhr.responseText);
+            }
           }
         });
       }
