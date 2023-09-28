@@ -7,30 +7,31 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      function highlightNav() {
+        var current = location.pathname.split("/").slice(-1)[0];
+        $('.nav li a').each(function(){
+          var $this = $(this);
+          if($this.attr('href').indexOf(current) !== -1){
+            $this.closest('li').addClass('active');
+          }
+        });
+      }
+      
+      // Include navbar and highlight active link
+      $("#navbar").load("navbar.html", function() {
+        highlightNav();
+      });
+    });
+  </script>
 </head>
 <body>
-
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Student Registry</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="index2.html">Home</a></li>
-      <li><a href="addStudent.html">Add</a></li>
-      <li><a href="updateStudent.html">Update</a></li>
-      <li><a href="displayStudent.html">View</a></li>
-      <li><a href="deleteStudent.html">Delete</a></li>
-      <li><a href="listStudent.html">List</a></li>
-      <li><a href="searchStudent.html">Search by Last Name</a></li>
-    </ul>
-  </div>
-</nav>
+  <div id="navbar"></div>
   
-<div class="container">
-  <h1>Welcome to Student Registry</h1>
-  <h3>Select one of the options above</h3>
-</div>
-
+  <div class="container">
+    <h1>Welcome to Student Registry</h1>
+    <h3>Select one of the above options</h3>
+  </div>
 </body>
 </html>
