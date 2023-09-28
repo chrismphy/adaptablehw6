@@ -12,13 +12,14 @@
         <li><a href="listStudent.html">List</a></li>
       </ul>
       <!-- Insert this in your existing navbar.html where you want the search bar to be located -->
-<form class="navbar-form navbar-left" role="search">
-    <div class="form-group">
-      <input type="text" id="searchBar" class="form-control" placeholder="Search by Last Name" oninput="searchStudent()">
-      <button type="button" onclick="searchStudent()">Search</button> <!-- New button here -->
-    </div>
-    <div id="searchResults" style="position: absolute; background-color: #fff; z-index: 10;"></div>
-  </form>
+      <form id="searchForm" class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" id="searchBar" class="form-control" placeholder="Search by Last Name">
+          <button type="button" onclick="redirectToSearch()">Search</button>
+        </div>
+        <!-- Moved the div out from here -->
+    </form>
+    
   
     </div>
   </nav>
