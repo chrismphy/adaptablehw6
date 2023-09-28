@@ -7,36 +7,20 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <script>
-    $(document).ready(function(){
-      function highlightNav() {
-        var current = location.pathname.split("/").slice(-1)[0];
-        $('.nav li a').each(function(){
-          var $this = $(this);
-          if($this.attr('href').indexOf(current) !== -1){
-            $this.closest('li').addClass('active');
-          }
-        });
-      }
-      
-      // Include navbar and highlight active link
-      $("#navbar").load("navbar.html", function() {
-        highlightNav();
-      });
-    });
-  </script>
 </head>
 <body>
   <div id="navbar"></div>
   <div id="header"></div>
   <script>
     $(function(){
+      // Load the header
       $("#header").load("header.html", function(response, status, xhr) {
         if (status == "error") {
           alert("An error occurred: " + xhr.status + " " + xhr.statusText);
         }
       });
       
+      // Load the navbar
       $("#navbar").load("navbar.html", function(response, status, xhr) {
         if (status == "error") {
           alert("An error occurred: " + xhr.status + " " + xhr.statusText);
