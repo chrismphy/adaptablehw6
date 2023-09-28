@@ -19,8 +19,13 @@
         </div>
         <!-- Moved the div out from here -->
     </form>
-    
-  
     </div>
   </nav>
+  <script>
+    function redirectToSearch() {
+      const lastName = encodeURIComponent(document.getElementById('searchBar').value);
+      window.location.href = 'searchStudent.html?lastName=' + lastName;
+    }
+  </script>
+  
   

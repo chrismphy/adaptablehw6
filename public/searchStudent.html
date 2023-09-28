@@ -50,7 +50,6 @@
         });
       }
     </script>
-    <!-- Optional: Add some basic styling -->
     <style>
       .student-result {
         margin-bottom: 15px;
@@ -59,5 +58,17 @@
         border-radius: 5px;
       }
     </style>
+    <script>
+        $(document).ready(function() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const lastName = urlParams.get('lastName');
+          
+          if (lastName) {
+            $('#last_name').val(decodeURIComponent(lastName));
+            searchStudent();
+          }
+        });
+      </script>
+      
   </body>
 </html>
