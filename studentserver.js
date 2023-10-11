@@ -19,7 +19,7 @@ const swaggerOptions = {
   apis: ['studentserver.js']
 
 };
-
+ensureDirectoryExistence('students');
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 app.use(bodyParser.json());
@@ -93,47 +93,44 @@ loadAllStudents();
 const fsPromises = require('fs').promises;
 
 app.post('/students', async (req, res) => {
-    try {
-        // Type casting at the start
-        let student = {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            gpa: parseFloat(req.body.gpa),
-            enrolled: req.body.enrolled === 'true',
-            record_id: new Date().getTime()
-        };
+  try {
+      let student = {
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          gpa: parseFloat(req.body.gpa),
+          enrolled: req.body.enrolled === 'true',
+          record_id: new Date().getTime()
+      };
 
-        if (checkStudentExists(student.first_name, student.last_name)) {
-            return res.status(409).send({ message: 'Conflict - Student already exists' });
-        }
+      if (checkStudentExists(student.first_name, student.last_name)) {
+          return res.status(409).send({ message: 'Conflict - Student already exists' });
+      }
 
-        const dir = 'students';
-        ensureDirectoryExistence(dir); // Ensure directory exists
+      const dir = 'students';
 
-        // Save the new student to a file
-        await fsPromises.writeFile(`${dir}/${student.record_id}.json`, JSON.stringify(student, null, 2));
+      // Save the new student to a file
+      await fsPromises.writeFile(`${dir}/${student.record_id}.json`, JSON.stringify(student, null, 2));
 
-        // Add the new student to our in-memory list
-        listOfStudents[student.record_id] = student;
+      // Add the new student to our in-memory list
+      listOfStudents[student.record_id] = student;
 
-        return res.status(201).send({ message: 'Student added successfully!', record_id: student.record_id });
+      return res.status(201).send({ message: 'Student added successfully!', record_id: student.record_id });
 
-    } catch (err) {
-        console.error(err);
-        return res.status(500).send({ message: 'Internal Server Error' });
-    }
+  } catch (err) {
+      console.error(err);
+      return res.status(500).send({ message: 'Internal Server Error' });
+  }
 });
 
 function checkStudentExists(firstName, lastName) {
-    for (let recordId in listOfStudents) {
-        const student = listOfStudents[recordId];
-        if (student.first_name === firstName && student.last_name === lastName) {
-            return true;
-        }
-    }
-    return false;
+  for (let recordId in listOfStudents) {
+      const student = listOfStudents[recordId];
+      if (student.first_name === firstName && student.last_name === lastName) {
+          return true;
+      }
+  }
+  return false;
 }
-
  
 /**
  * @swagger
