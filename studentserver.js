@@ -1,6 +1,11 @@
 //studentserver.js
 const express = require('express')
 const app = express()
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
+});
+
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const glob = require("glob");
