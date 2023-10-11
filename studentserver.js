@@ -1,11 +1,6 @@
 //studentserver.js
 const express = require('express')
 const app = express()
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-  next();
-});
-
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const glob = require("glob");
@@ -98,44 +93,47 @@ loadAllStudents();
 const fsPromises = require('fs').promises;
 
 app.post('/students', async (req, res) => {
-  try {
-      let student = {
-          first_name: req.body.first_name,
-          last_name: req.body.last_name,
-          gpa: parseFloat(req.body.gpa),
-          enrolled: req.body.enrolled === 'true',
-          record_id: new Date().getTime()
-      };
+    try {
+        // Type casting at the start
+        let student = {
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            gpa: parseFloat(req.body.gpa),
+            enrolled: req.body.enrolled === 'true',
+            record_id: new Date().getTime()
+        };
 
-      if (checkStudentExists(student.first_name, student.last_name)) {
-          return res.status(409).send({ message: 'Conflict - Student already exists' });
-      }
+        if (checkStudentExists(student.first_name, student.last_name)) {
+            return res.status(409).send({ message: 'Conflict - Student already exists' });
+        }
 
-      const dir = 'students';
+        const dir = 'students';
+        ensureDirectoryExistence(dir); // Ensure directory exists
 
-      // Save the new student to a file
-      await fsPromises.writeFile(`${dir}/${student.record_id}.json`, JSON.stringify(student, null, 2));
+        // Save the new student to a file
+        await fsPromises.writeFile(`${dir}/${student.record_id}.json`, JSON.stringify(student, null, 2));
 
-      // Add the new student to our in-memory list
-      listOfStudents[student.record_id] = student;
+        // Add the new student to our in-memory list
+        listOfStudents[student.record_id] = student;
 
-      return res.status(201).send({ message: 'Student added successfully!', record_id: student.record_id });
+        return res.status(201).send({ message: 'Student added successfully!', record_id: student.record_id });
 
-  } catch (err) {
-      console.error(err);
-      return res.status(500).send({ message: 'Internal Server Error' });
-  }
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({ message: 'Internal Server Error' });
+    }
 });
 
 function checkStudentExists(firstName, lastName) {
-  for (let recordId in listOfStudents) {
-      const student = listOfStudents[recordId];
-      if (student.first_name === firstName && student.last_name === lastName) {
-          return true;
-      }
-  }
-  return false;
+    for (let recordId in listOfStudents) {
+        const student = listOfStudents[recordId];
+        if (student.first_name === firstName && student.last_name === lastName) {
+            return true;
+        }
+    }
+    return false;
 }
+
  
 /**
  * @swagger
@@ -159,6 +157,14 @@ function checkStudentExists(firstName, lastName) {
 app.get('/students/:record_id', function (req, res) {
   var record_id = req.params.record_id;
 
+  // First, check if the student exists in the in-memory object
+  const studentInMemory = listOfStudents[record_id];
+
+  if (studentInMemory) {
+      return res.status(200).send(studentInMemory);
+  }
+
+  // If not found in-memory, attempt to read from the file
   fs.readFile("students/" + record_id + ".json", "utf8", function (err, data) {
       if (err) {
           var rsp_obj = {};
@@ -174,6 +180,7 @@ app.get('/students/:record_id', function (req, res) {
       }
   });
 });
+
 
 function readFiles(files, arr, res) {
   const fname = files.pop();
@@ -213,19 +220,14 @@ function readFiles(files, arr, res) {
  *         description: Error. Internal server error occurred.
  */
 app.get('/students', function (req, res) {
-  console.log("get students")
-  var obj = {};
-  var arr = [];
-  filesread = 0;
+  console.log("get students");
 
-  glob("students/*.json", null, function (err, files) {
-    if (err) {
-      return res.status(500).send({ "message": "error - internal server error" });
-    }
-    readFiles(files, [], res);
-  });
+  // Convert the listOfStudents object to an array
+  const allStudentsArray = Object.values(listOfStudents);
 
+  return res.status(200).send({ students: allStudentsArray });
 });
+
 //update by record id
 
 /**
