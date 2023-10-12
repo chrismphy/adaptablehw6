@@ -34,7 +34,7 @@ function ensureDirectoryExistence(dirPath) {
       fs.mkdirSync(dirPath);
   }
 }
-function loadAllStudents() {
+function loadAllStudents() {    // load all students at entry
   const dir = 'students';
 
   // Ensure students directory exists
@@ -91,6 +91,8 @@ loadAllStudents();
  */
 
 const fsPromises = require('fs').promises;
+const cors = require('cors');
+app.use(cors());
 
 app.post('/students', async (req, res) => {
     try {
@@ -447,7 +449,7 @@ app.get('/students/search/:last_name', function (req, res) {
  
  const server = app.listen(5678, () => {
    console.log('Server is running...');
-   console.log('Webapp:   http://localhost:5678/');
+   console.log('Webapp:   http://localhost:5678');
    console.log('API Docs: http://localhost:5678/api-docs');
  });
  
