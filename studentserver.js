@@ -34,7 +34,7 @@ function ensureDirectoryExistence(dirPath) {
       fs.mkdirSync(dirPath);
   }
 }
-function loadAllStudents() {    // load all students at entry
+function loadAllStudents() {
   const dir = 'students';
 
   // Ensure students directory exists
@@ -91,8 +91,6 @@ loadAllStudents();
  */
 
 const fsPromises = require('fs').promises;
-const cors = require('cors');
-app.use(cors());
 
 app.post('/students', async (req, res) => {
     try {
@@ -222,14 +220,19 @@ function readFiles(files, arr, res) {
  *         description: Error. Internal server error occurred.
  */
 app.get('/students', function (req, res) {
-  console.log("get students");
+  console.log("get students")
+  var obj = {};
+  var arr = [];
+  filesread = 0;
 
-  // Convert the listOfStudents object to an array
-  const allStudentsArray = Object.values(listOfStudents);
+  glob("students/*.json", null, function (err, files) {
+    if (err) {
+      return res.status(500).send({ "message": "error - internal server error" });
+    }
+    readFiles(files, [], res);
+  });
 
-  return res.status(200).send({ students: allStudentsArray });
 });
-
 //update by record id
 
 /**
@@ -449,7 +452,7 @@ app.get('/students/search/:last_name', function (req, res) {
  
  const server = app.listen(5678, () => {
    console.log('Server is running...');
-   console.log('Webapp:   http://localhost:5678');
+   console.log('Webapp:   http://localhost:5678/');
    console.log('API Docs: http://localhost:5678/api-docs');
  });
  
