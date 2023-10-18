@@ -139,59 +139,32 @@ function checkStudentExists(firstName, lastName) {
  *       404:
  *         description: Error. The requested resource was not found.
  */
-app.get('/students/:record_id', function (req, res) {
-  var record_id = req.params.record_id;
 
-  // First, check if the student exists in the in-memory object
-  const studentInMemory = listOfStudents[record_id];
+app.get('/students/:record_id', async (req, res) => {
+  const recordId = req.params.record_id; // Retrieve the record_id from the URL parameter
 
-  if (studentInMemory) {
-      return res.status(200).send(studentInMemory);
+  try {
+    // Query the database for the student with the specified record ID
+    const student = await db
+      .select('*')
+      .from('students')
+      .where({ record_id: recordId })
+      .first(); // Retrieve the first matching record
+
+    if (student) {
+      // Student record found, return it as a response
+      res.status(200).send(student);
+    } else {
+      // Student record not found
+      res.status(404).send({ message: 'Student not found' });
+    }
+  } catch (err) {
+    console.error("Error fetching student:", err);
+    res.status(500).send({ message: 'Internal Server Error' });
   }
-
-  // If not found in-memory, attempt to read from the file
-  fs.readFile("students/" + record_id + ".json", "utf8", function (err, data) {
-      if (err) {
-          var rsp_obj = {};
-          rsp_obj.record_id = record_id;
-          rsp_obj.message = 'error - resource not found';
-          return res.status(404).send(rsp_obj);
-      } else {
-          const student = JSON.parse(data);
-          student.record_id = parseInt(student.record_id, 10);
-          student.gpa = parseFloat(student.gpa);
-          student.enrolled = student.enrolled === true || student.enrolled === "true";
-          return res.status(200).send(student);
-      }
-  });
 });
 
 
-function readFiles(files, arr, res) {
-  const fname = files.pop();
-  if (!fname) return;
-
-  fs.readFile(fname, "utf8", function (err, data) {
-    if (err) {
-      return res.status(500).send({ "message": "error - internal server error" });
-    } else {
-      const student = JSON.parse(data);
-
-      // Ensure the attributes are of the right type
-      if (student.gpa) student.gpa = parseFloat(student.gpa);
-      if (student.record_id) student.record_id = parseInt(student.record_id, 10);
-      if (typeof student.enrolled === 'string') student.enrolled = student.enrolled === 'true';
-
-      arr.push(student);
-
-      if (files.length === 0) {
-        return res.status(200).send({ students: arr });
-      } else {
-        readFiles(files, arr, res);
-      }
-    }
-  });
-}
 /**
  * @swagger
  * /students:
