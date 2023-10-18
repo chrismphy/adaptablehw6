@@ -2,15 +2,19 @@ const knex = require('knex');
 
 let connection;
 
-// Check if the DATABASE_URL environment variable is set (indicative of Heroku environment)
 if (process.env.DATABASE_URL) {
-    connection = process.env.DATABASE_URL + '?ssl=true&sslmode=require';
+    connection = {
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    };
 } else {
     connection = {
-        host: 'localhost',
-        user: 'chrismphy',
-        password: 'Rubedo1989',
-        database: 'postgres',
+        host: 'ec2-3-210-173-88.compute-1.amazonaws.com',
+        user: 'odpqlzkorxdpwk',
+        password: 'fe9325aca7fe0e1f31839d39ed995695e37bfadc99f1605a80563d2396553420',
+        database: 'ddafaqvbr2tklh',
         port: 5432
     };
 }
