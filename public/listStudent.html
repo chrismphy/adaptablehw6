@@ -51,31 +51,33 @@
 
       function listStudents() {
         $.ajax({
-          url: "http://localhost:5678/students",
-          type: "GET",
-          success: function (response) {
-            console.log(response);
-            const students = response.students;
-            let tableRows = '';
-            
-            for(let i = 0; i < students.length; i++) {
-              tableRows += `<tr>
-                <td>${students[i].record_id}</td>
-                <td>${students[i].first_name}</td>
-                <td>${students[i].last_name}</td>
-                <td>${students[i].gpa}</td>
-                <td>${students[i].enrolled}</td>
-              </tr>`;
+            url: "http://localhost:5678/students",
+            type: "GET",
+            success: function(response) {
+                console.log(response);
+                const students = response.students;
+                let tableRows = '';
+    
+                for (let i = 0; i < students.length; i++) {
+                    tableRows += `<tr>
+                      <td>${students[i].record_id}</td>
+                      <td>${students[i].first_name}</td>
+                      <td>${students[i].last_name}</td>
+                      <td>${students[i].gpa}</td>
+                      <td>${students[i].enrolled}</td>
+                      <td>${students[i].uploaded_at}</td> <!-- Adjusted to uploaded_at -->
+                    </tr>`;
+                }
+    
+                $("#studentTable tbody").html(tableRows);
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+                $("#studentTable tbody").html('<tr><td colspan="6">Error loading data</td></tr>');
             }
-
-            $("#studentTable tbody").html(tableRows);
-          },
-          error: function (xhr) {
-            console.log(xhr.responseText);
-            $("#studentTable tbody").html('<tr><td colspan="5">Error loading data</td></tr>');
-          }
         });
-      }
+    }
+    
     </script>
     <div class="footer-info">
       Chris Murphy - ID: z23004526
