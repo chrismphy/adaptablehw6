@@ -39,14 +39,14 @@
         $.ajax({
           url: "http://localhost:5678/students/" + record_id,
           type: "get",
-          success: function(response) {
-            const student = JSON.parse(response);
+          dataType: "json", // Ensure response is parsed as JSON
+          success: function(student) { // Parse response as JSON and use it directly
             $("#mydiv").text("Name: " + student.first_name + " " + student.last_name + ", GPA: " + student.gpa + ", Enrolled: " + student.enrolled);
           },
           error: function(xhr) {
-            $("#mydiv").text('error: ' + xhr.responseText);
+            $("#mydiv").text('Error: ' + xhr.responseText);
           }
-        });
+        });      
       }
     </script>
     <div class="footer-info">
