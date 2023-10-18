@@ -7,4 +7,3 @@ const db = knex({
 });
 
 module.exports = db;
-psnet stop postgresql
