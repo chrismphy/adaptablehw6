@@ -6,7 +6,7 @@ const fs = require('fs');
 const glob = require("glob");
 const { type } = require('os');
 const path = require('path');
-const db = require('db'); // Adjust the path based on where you've placed the db.js file
+const db = require('./db'); // Adjust the path based on where you've placed the db.js file
 const { Pool } = require('pg');
 
 const pool = new Pool({
