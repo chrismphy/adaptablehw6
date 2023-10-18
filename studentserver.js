@@ -36,21 +36,6 @@ function ensureDirectoryExistence(dirPath) {
   }
 }
 
-async function loadAllStudents() {
-  try {
-    // Query all students from the database
-    const students = await db.select('*').from('students');
-
-    // Send the list of students as a response
-    res.status(200).send({ students });
-  } catch (err) {
-    console.error("Error fetching students:", err);
-    res.status(500).send({ message: "error - internal server error" });
-  }
-}
-
-// Load all students into memory
-loadAllStudents();
 
 /**
  * @swagger
