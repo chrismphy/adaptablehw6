@@ -448,13 +448,12 @@ app.get('/students/search/:last_name', function (req, res) {
   });
 }); //end search by last name 
 
+const PORT = process.env.PORT || 5678;
 
- 
- const server = app.listen(5678, () => {
-   console.log('Server is running...');
-   console.log('Webapp:   http://localhost:5678/');
-   console.log('API Docs: http://localhost:5678/api-docs');
- });
- 
- module.exports = { app, server }; // Export both app and server
- 
+const server = app.listen(PORT, () => {
+   console.log(`Server is running on port ${PORT}...`);
+   console.log(`Webapp:   http://localhost:${PORT}/`);
+   console.log(`API Docs: http://localhost:${PORT}/api-docs`);
+});
+
+module.exports = { app, server }; // Export both app and server
