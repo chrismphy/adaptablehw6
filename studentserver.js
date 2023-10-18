@@ -332,23 +332,31 @@ app.put('/students/:record_id', async function (req, res) {
  */
 
 
-app.delete('/students/:record_id', function (req, res) {
-  var record_id = req.params.record_id;
-  var fname = "students/" + record_id + ".json";
+app.delete('/students/:record_id', async (req, res) => {
+  try {
+      const record_id = req.params.record_id;
 
-  fs.unlink(fname, function (err) {
-    var rsp_obj = {};
-    if (err) {
-      rsp_obj.record_id = record_id;
-      rsp_obj.message = 'error - resource not found';
-      return res.status(404).send(rsp_obj);
-    } else {
-      rsp_obj.record_id = record_id;
-      // Send a 204 status with no content in the body
+      // Check if the student exists in the database
+      const existingStudent = await db('students')
+          .where('record_id', record_id)
+          .first();
+
+      if (!existingStudent) {
+          return res.status(404).send({ message: 'Error - Student not found' });
+      }
+
+      // Delete the student from the database
+      await db('students')
+          .where('record_id', record_id)
+          .delete();
+
       return res.status(204).send();
-    }
-  });
-}); //end delete method
+  } catch (err) {
+      console.error(err);
+      return res.status(500).send({ message: 'Internal Server Error' });
+  }
+});
+//end delete method
 
 
 
