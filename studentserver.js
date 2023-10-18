@@ -350,7 +350,7 @@ app.delete('/students/:record_id', async (req, res) => {
           .where('record_id', record_id)
           .delete();
 
-      return res.status(204).send();
+      return res.status(204).send({ message: 'Student deleted successfully' });
   } catch (err) {
       console.error(err);
       return res.status(500).send({ message: 'Internal Server Error' });
