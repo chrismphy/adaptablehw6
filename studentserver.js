@@ -241,20 +241,25 @@ function readFiles(files, arr, res) {
  *       500:
  *         description: Error. Internal server error occurred.
  */
-app.get('/students', function (req, res) {
-  console.log("get students")
-  var obj = {};
-  var arr = [];
-  filesread = 0;
 
-  glob("students/*.json", null, function (err, files) {
-    if (err) {
-      return res.status(500).send({ "message": "error - internal server error" });
+
+
+//load the list of students
+app.get('/students', async function (req, res) {
+    console.log("get students");
+    
+    try {
+        // Query all students from the database
+        const students = await db.select('*').from('students');
+
+        // Send the list of students as a response
+        res.status(200).send(students);
+    } catch (err) {
+        console.error("Error fetching students:", err);
+        res.status(500).send({ "message": "error - internal server error" });
     }
-    readFiles(files, [], res);
-  });
-
 });
+
 
 //update by record id below
 /**
