@@ -5,6 +5,15 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const db = require('./db'); // Adjust the path based on where you've placed the db.js file
+
+// Example database operation
+db.select('*').from('students').then((data) => {
+    console.log('Connected to the database successfully');
+    console.log('Result:', data);
+}).catch((error) => {
+    console.error('Error connecting to the database:', error);
+});
+
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 
