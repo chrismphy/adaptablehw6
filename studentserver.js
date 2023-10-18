@@ -1,26 +1,12 @@
-//studentserver.js
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const glob = require("glob");
-const { type } = require('os');
 const path = require('path');
 const db = require('./db'); // Adjust the path based on where you've placed the db.js file
-const { Pool } = require('pg');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
 
-const pool = new Pool({
-  user: 'chrismphy',
-  host: 'localhost',
-  database: 'postgres',
-  password: 'Rubedo1989',
-  port: 5432,
-});
-
-// Now you can use the `db` object to make database queries using knex
-
-const swaggerJsDoc = require('swagger-jsdoc')
-const swaggerUI = require('swagger-ui-express')
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
@@ -29,23 +15,25 @@ const swaggerOptions = {
     }
   },
   apis: ['studentserver.js']
-
 };
+
 ensureDirectoryExistence('students');
-const swaggerDocs = swaggerJsDoc(swaggerOptions)
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('./public'));
 
 // Global variable to hold all students
 let listOfStudents = {};
+
 //ensure directory existence
 function ensureDirectoryExistence(dirPath) {
   if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath);
+    fs.mkdirSync(dirPath);
   }
 }
+
 async function loadAllStudents() {
   const dir = 'students';
 
@@ -54,21 +42,27 @@ async function loadAllStudents() {
     fs.mkdirSync(dir);
   }
 
-  await client.connect();
-
   const files = fs.readdirSync(dir);
   for (const file of files) {
     const filePath = path.join(dir, file);
     const data = fs.readFileSync(filePath, 'utf8');
     const student = JSON.parse(data);
 
-    await client.query('INSERT INTO students (record_id, first_name, last_name, gpa, enrolled, uploaded_at) VALUES ($1, $2, $3, $4, $5, $6)', [student.record_id, student.first_name, student.last_name, student.gpa, student.enrolled, student.uploaded_at || new Date()]);
+    // Insert each student into the database using knex
+    await db('students').insert({
+      record_id: student.record_id,
+      first_name: student.first_name,
+      last_name: student.last_name,
+      gpa: student.gpa,
+      enrolled: student.enrolled,
+      uploaded_at: student.uploaded_at || new Date()
+    });
   }
-  await client.end();
-  }
+}
 
 // Load all students into memory
 loadAllStudents();
+
 /**
  * @swagger
  * /students:
