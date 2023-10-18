@@ -37,39 +37,15 @@ function ensureDirectoryExistence(dirPath) {
 }
 
 async function loadAllStudents() {
-  const dir = 'students';
+  try {
+    // Query all students from the database
+    const students = await db.select('*').from('students');
 
-  // Ensure students directory exists
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
-
-  const files = fs.readdirSync(dir);
-  for (const file of files) {
-    const filePath = path.join(dir, file);
-    const data = fs.readFileSync(filePath, 'utf8');
-    const student = JSON.parse(data);
-
-    // Check if a student with the same record_id already exists in the database
-    const existingStudent = await db('students')
-      .where('record_id', student.record_id)
-      .first();
-
-    if (!existingStudent) {
-      // If no existing student found with the same record_id, insert the new student
-      await db('students').insert({
-        record_id: student.record_id,
-        first_name: student.first_name,
-        last_name: student.last_name,
-        gpa: student.gpa,
-        enrolled: student.enrolled,
-        uploaded_at: student.uploaded_at || new Date()
-      });
-    } else {
-      // Handle the case where a student with the same record_id already exists
-      console.log(`Student with record_id ${student.record_id} already exists.`);
-      // You can choose to update the existing record or take other actions as needed.
-    }
+    // Send the list of students as a response
+    res.status(200).send({ students });
+  } catch (err) {
+    console.error("Error fetching students:", err);
+    res.status(500).send({ message: "error - internal server error" });
   }
 }
 
