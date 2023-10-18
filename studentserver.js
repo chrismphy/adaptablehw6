@@ -398,10 +398,11 @@ app.get('/students/search/:last_name', function (req, res) {
         if (err) {
           return res.status(500).send({ "message": "error - internal server error" });
         }
-        
+
         const student = JSON.parse(data);
 
-        if (student.last_name === lastName) {
+        // Check if the student's last name contains the search term (case-insensitive)
+        if (student.last_name.toLowerCase().includes(lastName.toLowerCase())) {
           matchingStudents.push(student);
         }
 
@@ -417,7 +418,8 @@ app.get('/students/search/:last_name', function (req, res) {
       });
     }
   });
-}); //end search by last name 
+});
+ //end search by last name 
 
 const PORT = process.env.PORT || 5678;
 
