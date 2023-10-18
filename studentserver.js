@@ -78,36 +78,37 @@ function ensureDirectoryExistence(dirPath) {
 const fsPromises = require('fs').promises;
 
 app.post('/students', async (req, res) => {
-    try {
-        // Type casting at the start
-        let student = {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            gpa: parseFloat(req.body.gpa),
-            enrolled: req.body.enrolled === 'true',
-            record_id: new Date().getTime()
-        };
+  try {
+      // Type casting at the start
+      let student = {
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          gpa: parseFloat(req.body.gpa),
+          enrolled: req.body.enrolled === 'true',
+          record_id: new Date().getTime()
+      };
 
-        if (checkStudentExists(student.first_name, student.last_name)) {
-            return res.status(409).send({ message: 'Conflict - Student already exists' });
-        }
+      // Check if the student already exists in the database
+      const existingStudent = await db('students')
+          .where('first_name', student.first_name)
+          .where('last_name', student.last_name)
+          .first();
 
-        const dir = 'students';
-        ensureDirectoryExistence(dir); // Ensure directory exists
+      if (existingStudent) {
+          return res.status(409).send({ message: 'Conflict - Student already exists' });
+      }
 
-        // Save the new student to a file
-        await fsPromises.writeFile(`${dir}/${student.record_id}.json`, JSON.stringify(student, null, 2));
+      // Insert the new student into the database
+      await db('students').insert(student);
 
-        // Add the new student to our in-memory list
-        listOfStudents[student.record_id] = student;
+      return res.status(201).send({ message: 'Student added successfully!', record_id: student.record_id });
 
-        return res.status(201).send({ message: 'Student added successfully!', record_id: student.record_id });
-
-    } catch (err) {
-        console.error(err);
-        return res.status(500).send({ message: 'Internal Server Error' });
-    }
+  } catch (err) {
+      console.error(err);
+      return res.status(500).send({ message: 'Internal Server Error' });
+  }
 });
+
 
 function checkStudentExists(firstName, lastName) {
     for (let recordId in listOfStudents) {
