@@ -48,15 +48,26 @@ async function loadAllStudents() {
     const data = fs.readFileSync(filePath, 'utf8');
     const student = JSON.parse(data);
 
-    // Insert each student into the database using knex
-    await db('students').insert({
-      record_id: student.record_id,
-      first_name: student.first_name,
-      last_name: student.last_name,
-      gpa: student.gpa,
-      enrolled: student.enrolled,
-      uploaded_at: student.uploaded_at || new Date()
-    });
+    // Check if a student with the same record_id already exists in the database
+    const existingStudent = await db('students')
+      .where('record_id', student.record_id)
+      .first();
+
+    if (!existingStudent) {
+      // If no existing student found with the same record_id, insert the new student
+      await db('students').insert({
+        record_id: student.record_id,
+        first_name: student.first_name,
+        last_name: student.last_name,
+        gpa: student.gpa,
+        enrolled: student.enrolled,
+        uploaded_at: student.uploaded_at || new Date()
+      });
+    } else {
+      // Handle the case where a student with the same record_id already exists
+      console.log(`Student with record_id ${student.record_id} already exists.`);
+      // You can choose to update the existing record or take other actions as needed.
+    }
   }
 }
 
