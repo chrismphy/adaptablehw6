@@ -1,0 +1,290 @@
+[33mcommit e44772a0dd0efab1bf0190bb32f44ccd798144b5[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31mheroku/main[m[33m)[m
+Author: chrismphy <49465122+chrismphy@users.noreply.github.com>
+Date:   Wed Oct 18 03:46:27 2023 -0400
+
+    test
+
+[33mcommit 9737b0e8f5d99f8babd703f36272c2075951dd9f[m
+Author: chrismphy <49465122+chrismphy@users.noreply.github.com>
+Date:   Wed Oct 18 03:43:57 2023 -0400
+
+    test
+
+[33mcommit 0fbd08f89914f2d26bc9bc88a5920d480ddda9ca[m
+Author: chrismphy <49465122+chrismphy@users.noreply.github.com>
+Date:   Wed Oct 18 03:20:42 2023 -0400
+
+    addstudent
+
+[33mcommit 7c8d47b9a76b8e9d149f44eee54cd8c2ecda0fce[m
+Author: chrismphy <49465122+chrismphy@users.noreply.github.com>
+Date:   Wed Oct 18 00:21:30 2023 -0400
+
+    updated heroku port
+
+[33mcommit 755ce882528f9f864fc2755807a76e49d94795b7[m
+Author: chrismphy <49465122+chrismphy@users.noreply.github.com>
+Date:   Wed Oct 11 20:48:08 2023 -0400
+
+    test
+
+[33mcommit 2b3b04a6d058e8ed8bd0823271bbd95eff546439[m
+Author: chrismphy <49465122+chrismphy@users.noreply.github.com>
+Date:   Wed Oct 11 20:33:43 2023 -0400
+
+    o
+
+[33mcommit 59222873e90d03aa6f78616434e1b1563f2a42a8[m
+Author: chrismphy <49465122+chrismphy@users.noreply.github.com>
+Date:   Wed Oct 11 19:09:42 2023 -0400
+
+    k
+
+[33mcommit 8b6a2b8110f24154bdb0857fe6f5ad4a4480959b[m
+Author: chrismphy <49465122+chrismphy@users.noreply.github.com>
+Date:   Wed Oct 11 18:36:29 2023 -0400
+
+    post
+
+[33mcommit 508466b9b3fcf993b0d6bca087ab889272ac455a[m
+Author: chrismphy <49465122+chrismphy@users.noreply.github.com>
+Date:   Wed Oct 11 18:33:25 2023 -0400
+
+    post
+
+[33mcommit 63399b53e4c90aa27e209013356dc50b699bd10d[m
+Author: chrismphy <49465122+chrismphy@users.noreply.github.com>
+Date:   Wed Oct 11 18:05:04 2023 -0400
+
+    updated studentserver.js based from testing in hw4
+
+[33mcommit 615954f248bbb67dbe78fd99d16553eef6f7f38b[m
+Author: chrismphy <49465122+chrismphy@users.noreply.github.com>
+Date:   Wed Oct 11 14:13:40 2023 -0400
+
+    test
+
+[33mcommit 912fd943ba709d9b53b2d21cf4528faf53aa357e[m
+Author: chrismphy <49465122+chrismphy@users.noreply.github.com>
+Date:   Wed Oct 11 13:20:57 2023 -0400
+
+    test
+
+[33mcommit c711357e1d69414a282ea2b605288165c1b10bcd[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 23:07:24 2023 -0400
+
+    styles update and footer for id and znumber
+
+[33mcommit 834148a833713b71abdb72a237b89c35db960eca[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 22:44:06 2023 -0400
+
+    header
+
+[33mcommit 2e3bad57734a9389b8037eeac1ede5a01a221f36[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 22:40:07 2023 -0400
+
+    list student header
+
+[33mcommit 97a2a71d45af8e7c5e0f63751ac13f0d2c9bbbeb[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 22:37:45 2023 -0400
+
+    update deletestudent header
+
+[33mcommit 514aa7408c7e3d0fbcd32e7e00787e7f6627570a[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 22:35:46 2023 -0400
+
+    header for displaystudent
+
+[33mcommit 5e1e9c0497157d5c87882b19f76052c5d5f43197[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 22:32:32 2023 -0400
+
+    header
+
+[33mcommit fece19e2d189f9cf133fd14e8397434b988199d1[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 22:30:00 2023 -0400
+
+    header
+
+[33mcommit 4b46aaf50e151d71774705c5f249292ff7987d9e[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 22:25:48 2023 -0400
+
+    r
+
+[33mcommit 9492144087e2ec915c1ed5f326a7b7da22b508a3[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 22:25:08 2023 -0400
+
+    jheader
+
+[33mcommit 2e77937f7b6a61d7b5c82e46b9d6cfe514ed5ec5[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 22:19:07 2023 -0400
+
+    header
+
+[33mcommit 8fd2db29acc1c1f2acf3ea00235ebd9251273e8e[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:42:52 2023 -0400
+
+    css intended to hide search buttons for searching last nmae
+
+[33mcommit 315ea0ec36d0eb1a3ba13374fd61386c09510ccc[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:37:38 2023 -0400
+
+    pd
+
+[33mcommit dbdb3dc610ef8a4f31ce261072e1e9f6133d5878[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:36:41 2023 -0400
+
+    update
+
+[33mcommit 25f02a8cd69739850e8977484f3a041a4e086b93[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:35:51 2023 -0400
+
+    o
+
+[33mcommit 4f40c6d9d1b9eac209ef4edc6d136e9c38a50ba5[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:35:15 2023 -0400
+
+    updates to searchstudent
+
+[33mcommit 794df6197fcb1d52d40e0aa9c722a87d2892d845[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:32:07 2023 -0400
+
+    update to searchstudent.thml
+
+[33mcommit 6eaac0bf075f5ef59d4ed3a44181827b080674e7[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:27:30 2023 -0400
+
+    updates
+
+[33mcommit 65cca9185d0f040a6c560354380c5c66869157cc[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:22:23 2023 -0400
+
+    navbar
+
+[33mcommit 9dbad142cc4766e0899cc7fcfec0887ddbce212a[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:17:48 2023 -0400
+
+    navbar
+
+[33mcommit 1308b83d562bcbce91d06e2a8ea4ac8f5dc21e05[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:17:22 2023 -0400
+
+    navbar
+
+[33mcommit 85c07a65d6ebcda63561c34e1714d48eb0b31990[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:12:50 2023 -0400
+
+    search student updated
+
+[33mcommit 6534c7205c8cdea9ed4c75dd9fcef432c3adc209[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:09:32 2023 -0400
+
+    navbar update
+
+[33mcommit 96c47bc0d0b6fd841ad65aa944ea85987d62cce2[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 21:05:15 2023 -0400
+
+    modified searchstudenthtml
+
+[33mcommit 11ace4e33a5b0d7bf1dff271d953aed3b033dd12[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:57:25 2023 -0400
+
+    header updated
+
+[33mcommit 8082e0048ae2d340abae83653c4240832c46bc34[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:56:33 2023 -0400
+
+    delete student updated
+
+[33mcommit b17bcfece6f2662e22f1cc5dba16c52d36ef41a7[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:52:36 2023 -0400
+
+    displaystudent updated
+
+[33mcommit 23485d941ac9522e722466d893efc2f26a9fdc20[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:49:27 2023 -0400
+
+    readonly update
+
+[33mcommit 71634c4ff73ede849d655f243d8d12598a4a53a9[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:44:33 2023 -0400
+
+    uppdatestudent.html modifed
+
+[33mcommit 72da9c523d228170b595813d0447bbc2599278a8[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:41:35 2023 -0400
+
+    addstudent updated
+
+[33mcommit 3cafb327de6fe86201c2f7e149302f2e6accd2a0[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:36:29 2023 -0400
+
+    removed home button
+
+[33mcommit bb5ec7b538f13c0fb573b6e711187422065025ad[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:34:56 2023 -0400
+
+    x
+
+[33mcommit cedbd7068dedbe82c7112ab2fa0a58af41621422[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:28:41 2023 -0400
+
+    typo
+
+[33mcommit 869813be0f2894917aea04c05ba4e5c9cc696616[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:27:04 2023 -0400
+
+    modified navbar
+
+[33mcommit 5e3867b164aeaa5816630edd1082226dd47bfd35[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:25:13 2023 -0400
+
+    navheader
+
+[33mcommit 5c1e7a7911176424b6afc43f4ffb47dea037dfd2[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:22:06 2023 -0400
+
+    index2
+
+[33mcommit ad8a9124b02c014f6b7308a3fa1a325c8a430583[m
+Author: Christopher Murphy <cmurph35@fau.edu>
+Date:   Wed Sep 27 20:10:10 2023 -0400
+
+    h3
+
+[33mcommit ed8273e14187229e7eed0d1482fb501ca4f0f27e[m
+Author: Christopher Murphy <cmurph35@
