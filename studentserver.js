@@ -381,44 +381,26 @@ app.delete('/students/:record_id', async (req, res) => {
  */
 
 // method for searching by last name
-app.get('/students/search/:last_name', function (req, res) {
-  const lastName = req.params.last_name;
-  let matchingStudents = [];
+app.get('/students/search/:last_name', async (req, res) => {
+  try {
+    const lastName = req.params.last_name;
 
-  // Use glob package
-  glob("students/*.json", null, function (err, files) {
-    if (err) {
-      return res.status(500).send({ "message": "error - internal server error" });
+    // Query the database for students with the specified last name
+    const matchingStudents = await db('students')
+      .where('last_name', 'like', `%${lastName}%`)
+      .select('*');
+
+    if (matchingStudents.length > 0) {
+      return res.status(200).send(matchingStudents);
+    } else {
+      return res.status(404).send({ "message": "No students with the given last name were found." });
     }
-
-    let readCount = 0;
-
-    for (const file of files) {
-      fs.readFile(file, "utf8", function (err, data) {
-        if (err) {
-          return res.status(500).send({ "message": "error - internal server error" });
-        }
-
-        const student = JSON.parse(data);
-
-        // Check if the student's last name contains the search term (case-insensitive)
-        if (student.last_name.toLowerCase().includes(lastName.toLowerCase())) {
-          matchingStudents.push(student);
-        }
-
-        readCount++;
-
-        if (readCount === files.length) {
-          if (matchingStudents.length > 0) {
-            return res.status(200).send(matchingStudents);
-          } else {
-            return res.status(404).send({ "message": "No students with the given last name were found." });
-          }
-        }
-      });
-    }
-  });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({ message: 'Internal Server Error' });
+  }
 });
+
  //end search by last name 
 
 const PORT = process.env.PORT || 5678;
