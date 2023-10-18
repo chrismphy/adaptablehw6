@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors=require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
@@ -7,6 +8,7 @@ const db = require('./db'); // Adjust the path based on where you've placed the 
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 
+app.use(cors());
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
