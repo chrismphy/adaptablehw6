@@ -51,11 +51,13 @@
       });
 
       function listStudents() {
+        console.log("listStudents function called"); // Debugging statement
+
         $.ajax({
             url: "http://localhost:5678/students",
             type: "GET",
             success: function(response) {
-                console.log(response);
+                console.log("Response received:", response); // Debugging statement
                 const students = response.students;
                 let tableRows = '';
     
@@ -73,7 +75,7 @@
                 $("#studentTable tbody").html(tableRows);
             },
             error: function(xhr) {
-                console.log(xhr.responseText);
+                console.log("Error:", xhr.responseText); // Debugging statement
                 $("#studentTable tbody").html('<tr><td colspan="6">Error loading data</td></tr>');
             }
         });
