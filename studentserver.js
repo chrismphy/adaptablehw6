@@ -262,26 +262,53 @@ app.get('/students', async function (req, res) {
 // Assuming you're using some SQL database connection library
 
 
+// ...
+
 app.put('/students/:record_id', async (req, res) => {
   const record_id = req.params.record_id;
   const { first_name, last_name, gpa, enrolled } = req.body;
 
   try {
-      const result = await pool.query(
-          "UPDATE public.students SET first_name = $1, last_name = $2, gpa = $3, enrolled = $4 WHERE record_id = $5;",
-          [first_name, last_name, gpa, enrolled, record_id]
-      );
+    let connection;
+    
+    if (process.env.DATABASE_URL) {
+      connection = {
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+          rejectUnauthorized: false
+        }
+      };
+    } else {
+      // Use the AWS RDS connection details here
+      connection = {
+        host: 'user-prod-us-east-2-1.cluster-cfi5vnucvv3w.us-east-2.rds.amazonaws.com',
+        user: 'chrismphy-main-db-07b32ef7ec26607cb',
+        password: 'YOUR_AWS_RDS_PASSWORD', // Replace with your actual AWS RDS password
+        database: 'chrismphy-main-db-07b32ef7ec26607cb',
+        port: 5432
+      };
+    }
 
-      if (result.rowCount > 0) {
-          res.status(200).json({ message: "Successfully updated!" });
-      } else {
-          res.status(404).json({ message: "Record not found!" });
-      }
+    const pool = new Pool(connection);
+
+    const result = await pool.query(
+        "UPDATE public.students SET first_name = $1, last_name = $2, gpa = $3, enrolled = $4 WHERE record_id = $5;",
+        [first_name, last_name, gpa, enrolled, record_id]
+    );
+
+    if (result.rowCount > 0) {
+        res.status(200).json({ message: "Successfully updated!" });
+    } else {
+        res.status(404).json({ message: "Record not found!" });
+    }
   } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: "Internal Server Error" });
+    console.error(err);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+// ...
+
 
 //end put method to update by id, will not replace entire student object for missing attributes
 
