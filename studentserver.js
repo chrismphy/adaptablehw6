@@ -10,11 +10,12 @@ const swaggerUI = require('swagger-ui-express');
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  connectionString: YOUR_DATABASE_URL,
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
 });
+
 
 
 app.use(cors());
