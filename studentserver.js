@@ -250,6 +250,8 @@ app.get('/students', async function (req, res) {
 
 
 // Assuming you're using some SQL database connection library
+const { Pool } = require('pg');
+
 
 app.put('/students/:record_id', async (req, res) => {
   const record_id = req.params.record_id;

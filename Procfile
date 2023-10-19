@@ -1,6 +1,1 @@
-
-
-
-
-
 web: node studentserver.js
