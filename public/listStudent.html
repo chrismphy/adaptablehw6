@@ -28,7 +28,15 @@
             </tbody>
         </table>
     </div>
-    <script>
+    ...
+<script>
+    $(function(){
+        $("#navbar").load("navbar.html", function(response, status, xhr) {
+            if (status == "error") {
+                alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
         function fetchStudents() {
             $.ajax({
                 url: '/students',  // Assuming this is your endpoint to fetch students
