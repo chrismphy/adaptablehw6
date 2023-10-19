@@ -259,7 +259,7 @@ app.put('/students/:record_id', async (req, res) => {
 
   try {
       const result = await pool.query(
-          "UPDATE students SET first_name = $1, last_name = $2, gpa = $3, enrolled = $4 WHERE record_id = $5",
+          "UPDATE public.students SET first_name = $1, last_name = $2, gpa = $3, enrolled = $4 WHERE record_id = $5;",
           [first_name, last_name, gpa, enrolled, record_id]
       );
 
