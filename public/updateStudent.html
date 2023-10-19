@@ -77,29 +77,30 @@
         var id_val = $("#id").val();
         var fname_val = $("#fname").val();
         var lname_val = $("#lname").val();
-        var gpa_val = $("#gpa").val();
+        var gpa_val = parseFloat($("#gpa").val()); // Convert GPA to a floating-point number.
         var enrolled_val = $("#enrolled").val() === "true" ? true : false;
-
+      
         $.ajax({
           url: "/students/" + id_val,
           type: "put",
-          data: {
+          contentType: "application/json", // Specify the content type as JSON.
+          data: JSON.stringify({
             first_name: fname_val,
             last_name: lname_val,
             gpa: gpa_val,
             enrolled: enrolled_val
-          },
+          }),
           success: function(response) {
             console.log("Complete Response:", response);
             $("#mydiv").text("Successfully updated student with ID " + id_val);
             fetchStudentById();
           },
-          error: function (xhr) {
+          error: function(xhr) {
             console.log(xhr.responseText);
             $("#mydiv").text('Error: ' + xhr.responseText);
           }
         });
-      }
+      }      
     </script>
     <div class="footer-info">
       Chris Murphy - ID: z23004526
