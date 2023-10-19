@@ -1,28 +1,23 @@
-const knex = require('knex');
+const { Pool } = require('pg');
 
-let connection;
-
-if (process.env.DATABASE_URL) {
-    connection = {
-        connectionString: process.env.DATABASE_URL,
-        ssl: {
-            rejectUnauthorized: false
-        }
-    };
-} else {
-    connection = {
-        host: 'localhost',
-        user: 'chrismphy',
-        password: 'Rubedo1989',
-        database: 'postgres',
-        port: 5432
-    };
+// Check if the DATABASE_URL environment variable is set.
+if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL environment variable is not set.');
 }
 
-const db = knex({
-    client: 'pg',
-    connection: connection,
-    searchPath: ['knex', 'public']
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
-module.exports = db;
+module.exports = {
+    // This will allow you to use the pool elsewhere to run queries
+    query: (text, params, callback) => {
+        return pool.query(text, params, callback);
+    },
+    
+    // If you ever need direct access to the pool
+    pool: pool
+};

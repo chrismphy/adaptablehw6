@@ -56,9 +56,9 @@
         var lname_val = $("#lname").val();
         var gpa_val = $("#gpa").val();
         var enrolled_val = $("#enrolled").val() === "true" ? true : false;
-
+      
         $.ajax({
-          url: "http://localhost:5678/students",
+          url: "/students",  // Modified line
           type: "post",
           data: {
             first_name: fname_val,
@@ -75,7 +75,7 @@
             $("#mydiv").text('error: ' + xhr.responseText);
           }
         });
-      }
+      }      
     </script>
     <div class="footer-info">
       Chris Murphy - ID: z23004526
