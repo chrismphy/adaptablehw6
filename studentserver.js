@@ -251,33 +251,26 @@ app.get('/students', async function (req, res) {
 
 // Assuming you're using some SQL database connection library
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 app.put('/students/:record_id', async (req, res) => {
-    const record_id = req.params.record_id;
-    const { first_name, last_name, gpa, enrolled } = req.body;
+  const record_id = req.params.record_id;
+  const { first_name, last_name, gpa, enrolled } = req.body;
 
-    try {
-        // SQL update query
-        const query = `
-            UPDATE students 
-            SET first_name = ?, last_name = ?, gpa = ?, enrolled = ?
-            WHERE record_id = ?`;
+  try {
+      const result = await pool.query(
+          "UPDATE students SET first_name = $1, last_name = $2, gpa = $3, enrolled = $4 WHERE record_id = $5",
+          [first_name, last_name, gpa, enrolled, record_id]
+      );
 
-        // Execute the query
-        await db.query(query, [first_name, last_name, gpa, enrolled, record_id]);
-
-        res.status(200).send({ message: 'successfully updated' });
-    } catch (error) {
-        res.status(500).send({ message: 'Internal server error', error });
-    }
+      if (result.rowCount > 0) {
+          res.status(200).json({ message: "Successfully updated!" });
+      } else {
+          res.status(404).json({ message: "Record not found!" });
+      }
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Internal Server Error" });
+  }
 });
-
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
-
 
 //end put method to update by id, will not replace entire student object for missing attributes
 

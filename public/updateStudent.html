@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en-US">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Update Student</title>
@@ -8,28 +8,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  </head>
-  <body>
-    <div id="navbar"></div>
-    <div id="header"></div>
-    <script>
-      $(function(){
-        $("#navbar").load("navbar.html", function(response, status, xhr) {
-          if (status == "error") {
-            alert("An error occurred: " + xhr.status + " " + xhr.statusText);
-          }
-        });
-        
-        $("#header").load("header.html", function(response, status, xhr) {
-          if (status == "error") {
-            alert("An error occurred: " + xhr.status + " " + xhr.statusText);
-          }
-        });
-      });
-    </script>
-    <br><br><br>
-    <label for="id">ID:</label>
-    <input type="text" id="id" name="id" oninput="fetchStudentById()"><br><br>
+</head>
+<body>
+    <label for="record_id">Record ID:</label>
+    <input type="text" id="record_id" name="record_id"><br><br>
 
     <label for="fname">First Name:</label>
     <input type="text" id="fname" name="fname"><br><br>
@@ -42,66 +24,39 @@
 
     <label for="enrolled">Enrolled:</label>
     <select id="enrolled" name="enrolled">
-      <option value="true">Enrolled</option>
-      <option value="false">Not Enrolled</option>
-    </select>
-    <br><br>
+        <option value="true">Enrolled</option>
+        <option value="false">Not Enrolled</option>
+    </select><br><br>
 
     <button onclick="updateStudent()">Update</button>
-    <br>
-    <br>
-    <div id="mydiv"></div>
+    <br><br>
+    <div id="updateResult"></div>
 
     <script>
-      function fetchStudentById() {
-        var id_val = $("#id").val();
-    
-        // Fetch the student details based on the ID
-        $.ajax({
-          url: "/students/" + id_val,
-          type: "get",
-          success: function(response) {
-            // Fill the input fields with the fetched data
-            $("#fname").val(response.first_name);
-            $("#lname").val(response.last_name);
-            $("#gpa").val(response.gpa);
-            $("#enrolled").val(response.enrolled ? "true" : "false");
-          },
-          error: function(xhr) {
-            console.log(xhr.responseText);
-            $("#mydiv").text('Error fetching data: ' + xhr.responseText);
-          }
-        });
-      }
-      function updateStudent() {
-        var id_val = $("#id").val(); // Assuming you have an input field with the ID of the student to be updated
-        var fname_val = $("#fname").val();
-        var lname_val = $("#lname").val();
-        var gpa_val = $("#gpa").val();
-        var enrolled_val = $("#enrolled").val() === "true" ? true : false;
-      
-        $.ajax({
-            url: "/students/", 
-            type: "PUT",
-            data: {
-                first_name: fname_val,
-                last_name: lname_val,
-                gpa: gpa_val,
-                enrolled: enrolled_val
-            },
-            success: function(response) {
-                console.log("Complete Response:", response);
-                $("#mydiv").text("Successfully updated student with ID " + id_val);
-            },
-            error: function(xhr) {
-                console.log(xhr.responseText);
-                $("#mydiv").text('error: ' + xhr.responseText);
-            }
-        });
-    }   
+        function updateStudent() {
+            var recordId_val = $("#record_id").val();
+            var fname_val = $("#fname").val();
+            var lname_val = $("#lname").val();
+            var gpa_val = $("#gpa").val();
+            var enrolled_val = $("#enrolled").val() === "true" ? true : false;
+
+            $.ajax({
+                url: "/students/" + recordId_val,
+                type: "PUT",
+                data: {
+                    first_name: fname_val,
+                    last_name: lname_val,
+                    gpa: parseFloat(gpa_val),
+                    enrolled: enrolled_val
+                },
+                success: function(response) {
+                    $("#updateResult").text("Successfully updated record " + recordId_val);
+                },
+                error: function(xhr) {
+                    $("#updateResult").text('Error updating: ' + xhr.responseText);
+                }
+            });
+        }
     </script>
-    <div class="footer-info">
-      Chris Murphy - ID: z23004526
-    </div>    
-  </body>
+</body>
 </html>
