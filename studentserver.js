@@ -247,73 +247,36 @@ app.get('/students', async function (req, res) {
 
 
 //put method to update by id, will not replace entire student object for missing attributes
-app.put('/students/:record_id', async function (req, res) {
-  var record_id = req.params.record_id;
-  var fname = "students/" + record_id + ".json";
-  var rsp_obj = {};
 
-  try {
-    const data = await fsPromises.readFile(fname, "utf8");
-    var existingObj = JSON.parse(data);
 
-    // Convert the inputs to their proper types
-    if (req.body.gpa) {
-      req.body.gpa = parseFloat(req.body.gpa);
+// Assuming you're using some SQL database connection library
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.put('/students/:record_id', async (req, res) => {
+    const record_id = req.params.record_id;
+    const { first_name, last_name, gpa, enrolled } = req.body;
+
+    try {
+        // SQL update query
+        const query = `
+            UPDATE students 
+            SET first_name = ?, last_name = ?, gpa = ?, enrolled = ?
+            WHERE record_id = ?`;
+
+        // Execute the query
+        await db.query(query, [first_name, last_name, gpa, enrolled, record_id]);
+
+        res.status(200).send({ message: 'successfully updated' });
+    } catch (error) {
+        res.status(500).send({ message: 'Internal server error', error });
     }
-    if (req.body.enrolled) {
-      req.body.enrolled = req.body.enrolled === 'true' ? true : false;
-    }
+});
 
-    // Check for missing or invalid attributes(422)
-    if (Object.keys(req.body).length === 0) {
-      return res.status(422).send({ message: 'Empty update payload' });
-    }
-
-    // Validate data types
-    if (req.body.gpa && typeof req.body.gpa !== 'number') {
-      return res.status(422).send({ message: 'Invalid data type for gpa' });
-    }
-    if (req.body.enrolled && typeof req.body.enrolled !== 'boolean') {
-      return res.status(422).send({ message: 'Invalid data type for enrolled' });
-    }
-
-    // Validate data values
-    if (req.body.gpa < 0.0 || req.body.gpa > 4.0) {
-      return res.status(422).send({ message: 'GPA should be between 0.0 and 4.0' });
-      }
-    // Update the attributes from the request body, if they exist
-if (req.body.first_name) {
-  existingObj.first_name = req.body.first_name;
-}
-if (req.body.last_name) {
-  existingObj.last_name = req.body.last_name;
-}
-if (req.body.gpa) {
-  existingObj.gpa = req.body.gpa;
-}
-if (typeof req.body.enrolled !== 'undefined') {  // We use typeof because enrolled can be false, which is falsy.
-  existingObj.enrolled = req.body.enrolled;
-}
-
-var updatedStr = JSON.stringify(existingObj, null, 2);
-
-// Write the updated student object back to the file
-await fsPromises.writeFile(fname, updatedStr);
-
-rsp_obj.record_id = record_id;
-rsp_obj.message = 'successfully updated';
-return res.status(200).send(rsp_obj);
-} catch (err) {
-  if (err.code === 'ENOENT') {
-  rsp_obj.record_id = record_id;
-  rsp_obj.message = 'error - resource not found';
-  return res.status(404).send(rsp_obj);
-  } else {
-  // Handle other errors here
-  return res.status(500).send({ "message": "error - internal server error" });
-  }
-  }
-  });
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});
 
 
 //end put method to update by id, will not replace entire student object for missing attributes
