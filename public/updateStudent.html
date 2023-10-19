@@ -29,7 +29,7 @@
     </script>
     <br><br><br>
     <label for="id">ID:</label>
-    <input type="text" id="id" name="id"><br><br>
+    <input type="text" id="id" name="id" oninput="fetchStudentById()"><br><br>
 
     <label for="fname">First Name:</label>
     <input type="text" id="fname" name="fname"><br><br>
@@ -53,6 +53,26 @@
     <div id="mydiv"></div>
 
     <script>
+      function fetchStudentById() {
+        var id_val = $("#id").val();
+    
+        // Fetch the student details based on the ID
+        $.ajax({
+          url: "/students/" + id_val,
+          type: "get",
+          success: function(response) {
+            // Fill the input fields with the fetched data
+            $("#fname").val(response.first_name);
+            $("#lname").val(response.last_name);
+            $("#gpa").val(response.gpa);
+            $("#enrolled").val(response.enrolled ? "true" : "false");
+          },
+          error: function(xhr) {
+            console.log(xhr.responseText);
+            $("#mydiv").text('Error fetching data: ' + xhr.responseText);
+          }
+        });
+      }
       function updateStudent() {
         var id_val = $("#id").val();
         var fname_val = $("#fname").val();
@@ -69,9 +89,10 @@
             gpa: gpa_val,
             enrolled: enrolled_val
           },
-          success: function (response) {
+          success: function(response) {
             console.log("Complete Response:", response);
             $("#mydiv").text("Successfully updated student with ID " + id_val);
+            fetchStudentById();
           },
           error: function (xhr) {
             console.log(xhr.responseText);
