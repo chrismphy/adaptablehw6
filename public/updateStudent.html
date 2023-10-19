@@ -81,7 +81,7 @@
         var enrolled_val = $("#enrolled").val() === "true" ? true : false;
       
         $.ajax({
-            url: "/students/" + id_val, 
+            url: "/students/", 
             type: "PUT",
             data: {
                 first_name: fname_val,
