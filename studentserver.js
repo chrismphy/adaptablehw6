@@ -7,6 +7,15 @@ const path = require('path');
 const db = require('./db'); // Adjust the path based on where you've placed the db.js file
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: YOUR_DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
 
 app.use(cors());
 const swaggerOptions = {
@@ -250,7 +259,6 @@ app.get('/students', async function (req, res) {
 
 
 // Assuming you're using some SQL database connection library
-const { Pool } = require('pg');
 
 
 app.put('/students/:record_id', async (req, res) => {
