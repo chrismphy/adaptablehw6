@@ -283,7 +283,7 @@ app.put('/students/:record_id', async (req, res) => {
       connection = {
         host: 'user-prod-us-east-2-1.cluster-cfi5vnucvv3w.us-east-2.rds.amazonaws.com',
         user: 'chrismphy-main-db-07b32ef7ec26607cb',
-        password: 'YOUR_AWS_RDS_PASSWORD', // Replace with your actual AWS RDS password
+        password: 'WvpBU7g2RSX58xvRf628YteuBW5rnE', // Replace with your actual AWS RDS password
         database: 'chrismphy-main-db-07b32ef7ec26607cb',
         port: 5432
       };
