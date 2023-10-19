@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en-US">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>List Students</title>
@@ -8,81 +8,50 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  </head>
-  <body>
+</head>
+<body>
     <div id="navbar"></div>
-    <div id="header"></div>
-    <script>
-      $(function(){
-        $("#navbar").load("navbar.html", function(response, status, xhr) {
-          if (status == "error") {
-            alert("An error occurred: " + xhr.status + " " + xhr.statusText);
-          }
-        });
-
-        $("#header").load("header.html", function(response, status, xhr) {
-          if (status == "error") {
-            alert("An error occurred: " + xhr.status + " " + xhr.statusText);
-          }
-        });
-      });
-    </script>
-
-    <button onclick="listStudents()">Refresh List</button>
-    <table id="studentTable" border="1">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>GPA</th>
-          <th>Enrolled</th>
-          <th>Uploaded at</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-
-    <script>
-      // This function will run when the page is fully loaded
-      $(document).ready(function() {
-        listStudents();
-      });
-
-      function listStudents() {
-        $.ajax({
-          url: "http://localhost:5678/students",
-          type: "GET",
-          dataType: "json", // Ensure response is parsed as JSON
-          success: function(response) {
-            const students = response; // No need to access response.students
-            let tableRows = '';
-      
-            for (let i = 0; i < students.length; i++) {
-              tableRows += `<tr>
-                <td>${students[i].record_id}</td>
-                <td>${students[i].first_name}</td>
-                <td>${students[i].last_name}</td>
-                <td>${students[i].gpa}</td>
-                <td>${students[i].enrolled}</td>
-                <td>${students[i].uploaded_at}</td>  
-              </tr>`;
-            }
-      
-            $("#studentTable tbody").html(tableRows);
-          },
-          error: function(xhr) {
-            console.log(xhr.responseText);
-            $("#studentTable tbody").html('<tr><td colspan="6">Error loading data</td></tr>');
-          }
-        });
-      }
-      
-    </script>
-    <div class="footer-info">
-      Chris Murphy - ID: z23004526
+    <div id="studentTable">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Record ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>GPA</th>
+                    <th>Enrolled</th>
+                    <th>Uploaded At</th>
+                </tr>
+            </thead>
+            <tbody id="studentData">
+                <!-- Student data will be populated here -->
+            </tbody>
+        </table>
     </div>
-    
-  </body>
+    <script>
+        function fetchStudents() {
+            $.ajax({
+                url: '/students',  // Assuming this is your endpoint to fetch students
+                method: 'GET',
+                success: function(data) {
+                    data.forEach(student => {
+                        $('#studentData').append(`
+                            <tr>
+                                <td>${student.record_id}</td>
+                                <td>${student.first_name}</td>
+                                <td>${student.last_name}</td>
+                                <td>${student.gpa}</td>
+                                <td>${student.enrolled ? 'Yes' : 'No'}</td>
+                                <td>${student.uploaded_at}</td>
+                            </tr>
+                        `);
+                    });
+                }
+            });
+        }
+
+        // Call the fetchStudents function when the page loads
+        $(document).ready(fetchStudents);
+    </script>
+</body>
 </html>

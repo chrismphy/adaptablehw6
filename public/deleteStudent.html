@@ -40,7 +40,7 @@
       function deleteStudent() {
         var studentID_val = $("#studentID").val();
         $.ajax({
-          url: `http://localhost:5678/students/${studentID_val}`,
+          url: `/students/${studentID_val}`,
           type: "DELETE",
           success: function (response) {
             console.log(response);

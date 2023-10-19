@@ -37,7 +37,7 @@
       function getStudent() {
         var record_id = $("#record_id").val();
         $.ajax({
-          url: "http://localhost:5678/students/" + record_id,
+          url: "/students/" + record_id,
           type: "get",
           dataType: "json", // Ensure response is parsed as JSON
           success: function(student) { // Parse response as JSON and use it directly

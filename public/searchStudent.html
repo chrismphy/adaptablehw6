@@ -38,7 +38,7 @@
       function searchStudent() {
         var last_name = encodeURIComponent($("#last_name").val());  // URL encode the last_name
         $.ajax({
-          url: "http://localhost:5678/students/search/" + last_name,
+          url: "/students/search/" + last_name,
           type: "get",
           success: function(response) {
             console.log("Type of Response:", typeof response);  // Check the type of response
