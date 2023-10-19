@@ -2,6 +2,10 @@
 *Christopher Murphy*
 *Z#23004526*
 
+Demo file Below:
+![Demo](hw6demo_compressed.gif)
+
+
 Software required:
 nodejs v20
 
