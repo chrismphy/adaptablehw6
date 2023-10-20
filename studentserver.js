@@ -8,6 +8,9 @@ const db = require('./db'); // Adjust the path based on where you've placed the 
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 const { Pool } = require('pg');
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Define the database connection configuration
 const connection = {
@@ -137,7 +140,7 @@ app.post('/students', async (req, res) => {
       return res.status(201).send({ message: 'Student added successfully!', record_id: student.record_id });
 
   } catch (err) {
-      console.error(err);
+      console.error("Error while adding student:", err);
       return res.status(500).send({ message: 'Internal Server Error' });
   }
 });
