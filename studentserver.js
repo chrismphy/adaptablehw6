@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const cors=require('cors');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
@@ -9,14 +9,16 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 const { Pool } = require('pg');
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
+// Define the database connection configuration
+const connection = {
+  host: 'user-prod-us-east-2-1.cluster-cfi5vnucvv3w.us-east-2.rds.amazonaws.com',
+  user: 'chrismphy-main-db-07b32ef7ec26607cb',
+  password: 'WvpBU7g2RSX58xvRf628YteuBW5rnE', // Replace with your actual AWS RDS password
+  database: 'chrismphy-main-db-07b32ef7ec26607cb',
+  port: 5432
+};
 
-
+const pool = new Pool(connection);
 
 app.use(cors());
 const swaggerOptions = {
@@ -45,6 +47,9 @@ function ensureDirectoryExistence(dirPath) {
     fs.mkdirSync(dirPath);
   }
 }
+
+
+module.exports = { app, server }; // Export both app and server
 
 
 /**
@@ -86,6 +91,32 @@ function ensureDirectoryExistence(dirPath) {
  */
 
 const fsPromises = require('fs').promises;
+
+app.put('/students/:record_id', async (req, res) => {
+  const record_id = req.params.record_id;
+  const { first_name, last_name, gpa, enrolled } = req.body;
+
+  try {
+    const result = await db('students')
+      .where('record_id', record_id)
+      .update({
+        first_name: first_name,
+        last_name: last_name,
+        gpa: gpa,
+        enrolled: enrolled,
+      });
+
+    if (result > 0) {
+      res.status(200).json({ message: "Successfully updated!" });
+    } else {
+      res.status(404).json({ message: "Record not found!" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 
 app.post('/students', async (req, res) => {
   try {
@@ -264,50 +295,7 @@ app.get('/students', async function (req, res) {
 
 // ...
 
-app.put('/students/:record_id', async (req, res) => {
-  const record_id = req.params.record_id;
-  const { first_name, last_name, gpa, enrolled } = req.body;
 
-  try {
-    let connection;
-    
-    if (process.env.DATABASE_URL) {
-      connection = {
-        connectionString: process.env.DATABASE_URL,
-        ssl: {
-          rejectUnauthorized: false
-        }
-      };
-    } else {
-      // Use the AWS RDS connection details here
-      connection = {
-        host: 'user-prod-us-east-2-1.cluster-cfi5vnucvv3w.us-east-2.rds.amazonaws.com',
-        user: 'chrismphy-main-db-07b32ef7ec26607cb',
-        password: 'WvpBU7g2RSX58xvRf628YteuBW5rnE', // Replace with your actual AWS RDS password
-        database: 'chrismphy-main-db-07b32ef7ec26607cb',
-        port: 5432
-      };
-    }
-
-    const pool = new Pool(connection);
-
-    const result = await pool.query(
-        "UPDATE public.students SET first_name = $1, last_name = $2, gpa = $3, enrolled = $4 WHERE record_id = $5;",
-        [first_name, last_name, gpa, enrolled, record_id]
-    );
-
-    if (result.rowCount > 0) {
-        res.status(200).json({ message: "Successfully updated!" });
-    } else {
-        res.status(404).json({ message: "Record not found!" });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
-
-// ...
 
 
 //end put method to update by id, will not replace entire student object for missing attributes
