@@ -49,9 +49,6 @@ function ensureDirectoryExistence(dirPath) {
 }
 
 
-module.exports = { app, server }; // Export both app and server
-
-
 /**
  * @swagger
  * /students:
