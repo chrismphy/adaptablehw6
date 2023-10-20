@@ -114,7 +114,6 @@ app.put('/students/:record_id', async (req, res) => {
   }
 });
 
-
 app.post('/students', async (req, res) => {
   try {
       // Type casting at the start
@@ -126,13 +125,9 @@ app.post('/students', async (req, res) => {
           record_id: new Date().getTime()
       };
 
-      // Check if the student already exists in the database
-      const existingStudent = await db('students')
-          .where('first_name', student.first_name)
-          .where('last_name', student.last_name)
-          .first();
-
-      if (existingStudent) {
+      // Check if the student already exists in the database using the new function
+      const studentExists = await checkStudentExists(student.first_name, student.last_name);
+      if (studentExists) {
           return res.status(409).send({ message: 'Conflict - Student already exists' });
       }
 
@@ -147,15 +142,12 @@ app.post('/students', async (req, res) => {
   }
 });
 
-
-function checkStudentExists(firstName, lastName) {
-    for (let recordId in listOfStudents) {
-        const student = listOfStudents[recordId];
-        if (student.first_name === firstName && student.last_name === lastName) {
-            return true;
-        }
-    }
-    return false;
+async function checkStudentExists(firstName, lastName) {
+  const existingStudent = await db('students')
+      .where('first_name', firstName)
+      .where('last_name', lastName)
+      .first();
+  return !!existingStudent;
 }
 
  
