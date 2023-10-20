@@ -6,8 +6,12 @@ const connection = {
     user: 'chrismphy-main-db-07b32ef7ec26607cb',
     password: 'WvpBU7g2RSX58xvRf628YteuBW5rnE', // Replace with your actual AWS RDS password
     database: 'chrismphy-main-db-07b32ef7ec26607cb',
-    port: 5432
+    port: 5432,
+    ssl:{
+        rejectUnauthorized: false
+    }
 };
+
 
 // Create a new Pool instance
 const pool = new Pool(connection);
@@ -21,8 +25,7 @@ CREATE TABLE students (
     gpa numeric,
     enrolled boolean,
     uploaded_at timestamp without time zone
-);
-`;
+);`;
 
 // Connect to the database and execute the query
 pool.query(createTableQuery)
